@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_tsa_rfc3161/tsahashalgo.dart';
 import 'TSARequest.dart';
 
 import 'package:flutter/material.dart';
@@ -58,7 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
     File file = File(result.files.single.path!);
 
     try {
-      TSARequest tsq = TSARequest.fromFile(filepath: file.path);
+      TSARequest tsq = TSARequest.fromFile(
+          filepath: file.path, algorithm: TSAHashAlgo.sha512);
 
       Response r = await tsq.run(hostname: "http://timestamp.digicert.com");
       //
