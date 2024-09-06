@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_getters_setters, file_names
-
 import 'dart:io';
 import 'dart:typed_data';
 

@@ -5,12 +5,10 @@
 
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-
 import 'package:dio/dio.dart';
-import 'tsa_hash_algo.dart';
 import 'package:flutter/material.dart';
 
-import 'tsa_request.dart';
+import 'package:flutter_tsa_rfc3161/flutter_tsa_rfc3161.dart';
 
 void main() {
   runApp(const MyApp());
@@ -68,17 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
           nonce: nonceValue,
           certReq: true);
 
-      // tsq.asn1sequence.encodedBytes is the same content as
-      // the content of file.digicert.tsq
-      // when you use openssl ts -query -data file.txt -no_nonce -sha256 -cert -out file.digicert.tsq
+      Response response =
+          await tsq.run(hostname: "http://timestamp.digicert.com");
 
-      /* or for a string 
-      TSARequest tsq =
-          TSARequest.fromString(s: "yannick", algorithm: TSAHashAlgo.sha512);
-          */
-      Response r = await tsq.run(hostname: "http://timestamp.digicert.com");
-
-      _iStatusCode = r.statusCode;
+      _iStatusCode = response.statusCode;
       if (_iStatusCode == 200) {
         _errorMessage = "good";
       } else {
