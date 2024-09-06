@@ -70,78 +70,34 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() async {
-    await _pickFile();
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  void _timestamp() async {
+    String s = "test eliaz coucou\n\n\n";
 
-  Future<void> _pickFile() async {
-    // Sélectionner un fichier à horodater
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    Digest digest = sha256.convert(s.codeUnits);
 
-    if (result != null) {
-      File file = File(result.files.single.path!);
-
-      await _timestampFile(file);
-    }
-  }
-
-  Future<void> _timestampFile(File file) async {
-    // Lire le contenu du fichier
-    Uint8List fileBytes = await file.readAsBytes();
-
-    // Générer l'empreinte SHA-256 du fichier
-    Digest digest = sha256.convert(fileBytes);
-
-    // Créer une requête d'horodatage en utilisant l'empreinte SHA-256
-    String tsaUrl = 'http://timestamp.digicert.com'; // URL du serveur TSA
-
-    // construction de l'algorithme de hachage
+    // build Seq Algorithm
     ASN1Sequence seqAlgorithm = getSeqAlgorithm();
 
-    // construction du messageImprint
+    // build messageImprint
     ASN1Sequence messageImprintSequence =
         getSeqMessageImprintSequence(seqAlgorithm, digest);
 
-    // version 1 de l'algorithm
+    // version 1 algorithm
     ASN1Integer version = ASN1Integer.fromInt(1);
 
-    // construction de la requete
+    // build timeStampRequest
     ASN1Sequence timeStampReq = ASN1Sequence();
     timeStampReq.add(version);
     timeStampReq.add(messageImprintSequence);
 
-    // marche bien sans ca aussi
-    //timeStampReq
-    //    .add(ASN1Object.fromBytes(Uint8List.fromList([0x01, 0x01, 0xff])));
-
-    // ASN1ObjectIdentifier reqPolicy = ASN1ObjectIdentifier(
-    //    [1, 3, 6, 1, 4, 1, 4146, 1]); // Exemple d'OID de politique
-    // int nonceValue =
-    //    DateTime.now().millisecondsSinceEpoch; // Utiliser un entier unique
-    // ASN1Integer nonce = ASN1Integer(BigInt.from(nonceValue));
-    // ASN1Boolean certReq = ASN1Boolean(
-    //    true); // Demande d'inclusion des certificats dans la réponse
-    // timeStampReq.add(reqPolicy);
-    // timeStampReq.add(nonce);
-    // timeStampReq.add(certReq);
-
-    // Créer la requête d'horodatage
-    await _write(timeStampReq);
-
-    // Envoyer la requête au serveur TSA
+    // send request to TSA Server
 
     Options options =
         Options(headers: {'Content-Type': 'application/timestamp-query'});
 
     final dio = Dio();
+    // Créer une requête d'horodatage en utilisant l'empreinte SHA-256
+    String tsaUrl = 'http://timestamp.digicert.com'; // URL du serveur TSA
 
     Response response = await dio.post(tsaUrl,
         data: timeStampReq.encodedBytes, options: options);
@@ -149,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print(response);
   }
 
+  // for future purpose
   _write(ASN1Sequence timeStampReq) async {
     try {
       Uint8List data = timeStampReq.encodedBytes;
@@ -167,76 +124,46 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: const Center(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              'push button for timestamp',
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: _timestamp,
+        tooltip: 'Timestamp',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
 
 ASN1Sequence getSeqMessageImprintSequence(
     ASN1Sequence seqAlgorithm, Digest digest) {
+  //
   Uint8List uint8list = Uint8List.fromList(digest.bytes);
 
-  print(digest.toString());
-
-  ASN1Object strange = ASN1Object.fromBytes(Uint8List.fromList([0x04, 0x20]));
-  ASN1Object x = ASN1Object.fromBytes(uint8list);
+  ASN1Object hashedText = ASN1Object.fromBytes(uint8list);
 
   ASN1Sequence messageImprintSequence = ASN1Sequence();
 
   messageImprintSequence.add(seqAlgorithm);
-  messageImprintSequence.add(strange);
-  messageImprintSequence.add(x);
 
-  dumpSequence(messageImprintSequence.encodedBytes);
+  // why must I add this ? -- BEGIN --
+  ASN1Object strange = ASN1Object.fromBytes(Uint8List.fromList([0x04, 0x20]));
+  messageImprintSequence.add(strange);
+  // why must I add this ? -- END --
+  messageImprintSequence.add(hashedText);
 
   return messageImprintSequence;
 }
