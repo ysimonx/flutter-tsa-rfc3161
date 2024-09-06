@@ -12,6 +12,12 @@ will fails with web configuration because digicert does not provide CORS header
 Example
 
 ```
+import 'package:dio/dio.dart';
+import 'TSARequest.dart';
+
+// ...
+
+
  try {
       TSARequest tsq = TSARequest.fromFile(filepath: file.path);
       Response r = await tsq.run(hostname: "http://timestamp.digicert.com");   
