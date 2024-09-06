@@ -13,9 +13,12 @@ import 'TSARequest.dart';
 
 
  try {
-      TSARequest tsq = TSARequest.fromFile(
-          filepath: file.path, algorithm: TSAHashAlgo.sha512); //  or TSAHashAlgo.sha256
-
+     TSARequest tsq = TSARequest.fromFile(
+          filepath: file.path,
+          algorithm: TSAHashAlgo.sha512,
+          nonce: nonceValue,
+          certReq: true);
+          
       // for a string use 
       // TSARequest tsq = TSARequest.fromString(s: "yannick", algorithm: TSAHashAlgo.sha512);
       

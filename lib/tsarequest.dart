@@ -68,30 +68,47 @@ class TSARequest {
     }
   }
 
-  TSARequest.fromFile({required String filepath, required int algorithm}) {
+  TSARequest.fromFile(
+      {required String filepath,
+      required int algorithm,
+      int? nonce,
+      bool? certReq}) {
     File file = File(filepath);
     List<int> fileBytes = file.readAsBytesSync();
     //
     ASN1Sequence messageImprint =
         _getSeqMessageImprintSequence(message: fileBytes, algorithm: algorithm);
 
-    _init(messageImprint);
+    _init(messageImprint: messageImprint, nonce: nonce, certReq: certReq);
   }
 
-  TSARequest.fromString({required String s, required int algorithm}) {
+  TSARequest.fromString(
+      {required String s, required int algorithm, int? nonce, bool? certReq}) {
     //
     ASN1Sequence messageImprint = _getSeqMessageImprintSequence(
         message: s.codeUnits, algorithm: algorithm);
 
-    _init(messageImprint);
+    _init(messageImprint: messageImprint, nonce: nonce, certReq: certReq);
   }
 
-  void _init(ASN1Sequence messageImprint) {
+  void _init(
+      {required ASN1Sequence messageImprint, int? nonce, bool? certReq}) {
     ASN1Integer version = ASN1Integer.fromInt(1);
     ASN1Sequence timeStampReq = ASN1Sequence();
 
     timeStampReq.add(version);
     timeStampReq.add(messageImprint);
+
+    if (nonce != null) {
+      ASN1Integer asn1nonce = ASN1Integer(BigInt.from(nonce));
+      timeStampReq.add(asn1nonce);
+    }
+    if (certReq != null) {
+      ASN1Boolean asncertReq = ASN1Boolean(
+          certReq); // Demande d'inclusion des certificats dans la réponse
+
+      timeStampReq.add(asncertReq);
+    }
 
     encodedBytes = timeStampReq.encodedBytes;
   }

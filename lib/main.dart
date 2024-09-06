@@ -53,6 +53,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     FilePickerResult? result = await FilePicker.platform.pickFiles();
+    int nonceValue =
+        DateTime.now().millisecondsSinceEpoch; // Utiliser un entier unique
+
     if (result == null) {
       return;
     }
@@ -60,13 +63,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
     try {
       TSARequest tsq = TSARequest.fromFile(
-          filepath: file.path, algorithm: TSAHashAlgo.sha512);
+          filepath: file.path,
+          algorithm: TSAHashAlgo.sha512,
+          nonce: nonceValue,
+          certReq: true);
 
       /* or for a string 
       TSARequest tsq =
           TSARequest.fromString(s: "yannick", algorithm: TSAHashAlgo.sha512);
+          */
       Response r = await tsq.run(hostname: "http://timestamp.digicert.com");
-      */
 
       _iStatusCode = r.statusCode;
       if (_iStatusCode == 200) {
