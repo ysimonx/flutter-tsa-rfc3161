@@ -2,6 +2,7 @@
 
 a PoC of timestamping content with Flutter thanks to Digicert's timestamp server
 
+(SHA-256 as hash method)
 
 tested on macos and android configurations
 
