@@ -69,16 +69,24 @@ class TSARequest {
   }
 
   TSARequest.fromFile({required String filepath, required int algorithm}) {
-    filepath = filepath;
-    hashalgo = "sha256";
-
     File file = File(filepath);
     List<int> fileBytes = file.readAsBytesSync();
-
     //
     ASN1Sequence messageImprint =
         _getSeqMessageImprintSequence(message: fileBytes, algorithm: algorithm);
 
+    _init(messageImprint);
+  }
+
+  TSARequest.fromString({required String s, required int algorithm}) {
+    //
+    ASN1Sequence messageImprint = _getSeqMessageImprintSequence(
+        message: s.codeUnits, algorithm: algorithm);
+
+    _init(messageImprint);
+  }
+
+  void _init(ASN1Sequence messageImprint) {
     ASN1Integer version = ASN1Integer.fromInt(1);
     ASN1Sequence timeStampReq = ASN1Sequence();
 

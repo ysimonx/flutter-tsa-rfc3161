@@ -62,22 +62,23 @@ class _MyHomePageState extends State<MyHomePage> {
       TSARequest tsq = TSARequest.fromFile(
           filepath: file.path, algorithm: TSAHashAlgo.sha512);
 
+      /* or for a string 
+      TSARequest tsq =
+          TSARequest.fromString(s: "yannick", algorithm: TSAHashAlgo.sha512);
       Response r = await tsq.run(hostname: "http://timestamp.digicert.com");
-      //
-      setState(() {
-        _iStatusCode = r.statusCode;
-        if (_iStatusCode == 200) {
-          _errorMessage = "good";
-        } else {
-          _errorMessage = "error";
-        }
-      });
+      */
+
+      _iStatusCode = r.statusCode;
+      if (_iStatusCode == 200) {
+        _errorMessage = "good";
+      } else {
+        _errorMessage = "error";
+      }
     } on Exception catch (e) {
-      setState(() {
-        _iStatusCode = 0;
-        _errorMessage = "exception : ${e.toString()}";
-      });
+      _iStatusCode = 0;
+      _errorMessage = "exception : ${e.toString()}";
     }
+    setState(() {});
   }
 
   @override
