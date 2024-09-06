@@ -1,9 +1,19 @@
-# flutter TSA (Time Stamping Authority)  client rfc3161
+# Flutter TSA (Time Stamping Authority)  client rfc3161
 
-a PoC of timestamping content with Flutter thanks to Digicert's timestamp server
+tested on macos and android configurations (will fails with flutter web if TSA host does not provide CORS header)
 
 
-tested on macos and android configurations
+```
+import 'package:dio/dio.dart';
+import 'TSARequest.dart';
 
-will fails with web configuration because digicert does not provide CORS header
+// ...
 
+
+ try {
+      TSARequest tsq = TSARequest.fromFile(filepath: file.path);
+      Response r = await tsq.run(hostname: "http://timestamp.digicert.com");   
+ } on Exception catch (e) { 
+     debugPrint(e.toString());
+ }
+```
