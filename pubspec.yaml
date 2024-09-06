@@ -1,4 +1,4 @@
-name: flutter_tsa_rfc3161
+name: tsa_rfc3161
 description: "Flutter TSA (Time Stamping Authority)  client rfc3161."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

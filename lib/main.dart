@@ -8,7 +8,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_tsa_rfc3161/flutter_tsa_rfc3161.dart';
+import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 
 void main() {
   runApp(const MyApp());

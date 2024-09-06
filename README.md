@@ -7,7 +7,7 @@ tested on macos and android configurations
 
 ```
 import 'package:dio/dio.dart';
-import 'package:flutter_tsa_rfc3161/flutter_tsa_rfc3161.dart';
+import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 
 // ...
 
