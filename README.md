@@ -1,4 +1,4 @@
-# flutter TSA (Time Stamping Authority)  client rfc3161
+# Flutter TSA (Time Stamping Authority)  client rfc3161
 
 a PoC of timestamping content with Flutter thanks to Digicert's timestamp server
 
