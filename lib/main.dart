@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_tsa_rfc3161/tsa_hash_algo.dart';
+import 'tsa_hash_algo.dart';
 import 'package:flutter/material.dart';
 
 import 'tsa_request.dart';
