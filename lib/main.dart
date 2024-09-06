@@ -68,6 +68,10 @@ class _MyHomePageState extends State<MyHomePage> {
           nonce: nonceValue,
           certReq: true);
 
+      // tsq.asn1sequence.encodedBytes is the same content as
+      // the content of file.digicert.tsq
+      // when you use openssl ts -query -data file.txt -no_nonce -sha256 -cert -out file.digicert.tsq
+
       /* or for a string 
       TSARequest tsq =
           TSARequest.fromString(s: "yannick", algorithm: TSAHashAlgo.sha512);
