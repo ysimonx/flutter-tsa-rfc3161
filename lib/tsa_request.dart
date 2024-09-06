@@ -8,37 +8,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'tsahashalgo.dart';
+import 'tsa_hash_algo.dart';
 
 class TSARequest {
-  String _filepath = "";
-  String _hashalgo = "";
-  late Uint8List _encodedBytes;
+  String? filepath;
+
+  late int algorithm;
+  late ASN1Sequence _asn1sequence;
+  int? nonce;
+  bool? certReq;
 
   TSARequest();
 
-  String get filepath {
-    return _filepath;
-  }
-
-  set filepath(String filepath) {
-    _filepath = filepath;
-  }
-
-  String get hashalgo {
-    return _hashalgo;
-  }
-
-  set hashalgo(String hashalgo) {
-    _hashalgo = hashalgo;
-  }
-
-  Uint8List get encodedBytes {
-    return _encodedBytes;
-  }
-
-  set encodedBytes(Uint8List encodedBytes) {
-    _encodedBytes = encodedBytes;
+  ASN1Sequence get asn1sequence {
+    return _asn1sequence;
   }
 
   Future<Response> run({required String hostname}) async {
@@ -53,8 +36,8 @@ class TSARequest {
     String tsaUrl = hostname; // URL du serveur TSA
 
     try {
-      Response response =
-          await dio.post(tsaUrl, data: encodedBytes, options: options);
+      Response response = await dio.post(tsaUrl,
+          data: asn1sequence.encodedBytes, options: options);
 
       return response;
     } on DioException catch (e) {
@@ -69,26 +52,26 @@ class TSARequest {
   }
 
   TSARequest.fromFile(
-      {required String filepath,
-      required int algorithm,
-      int? nonce,
-      bool? certReq}) {
-    File file = File(filepath);
+      {required this.filepath,
+      required this.algorithm,
+      this.nonce,
+      this.certReq}) {
+    File file = File(filepath!);
     List<int> fileBytes = file.readAsBytesSync();
     //
     ASN1Sequence messageImprint =
         _getSeqMessageImprintSequence(message: fileBytes, algorithm: algorithm);
 
-    _init(messageImprint: messageImprint, nonce: nonce, certReq: certReq);
+    _init(messageImprint: messageImprint);
   }
 
   TSARequest.fromString(
-      {required String s, required int algorithm, int? nonce, bool? certReq}) {
+      {required String s, required this.algorithm, this.nonce, this.certReq}) {
     //
     ASN1Sequence messageImprint = _getSeqMessageImprintSequence(
         message: s.codeUnits, algorithm: algorithm);
 
-    _init(messageImprint: messageImprint, nonce: nonce, certReq: certReq);
+    _init(messageImprint: messageImprint);
   }
 
   void _init(
@@ -110,7 +93,7 @@ class TSARequest {
       timeStampReq.add(asncertReq);
     }
 
-    encodedBytes = timeStampReq.encodedBytes;
+    _asn1sequence = timeStampReq;
   }
 
   static _getSeqMessageImprintSequence(
@@ -139,9 +122,9 @@ class TSARequest {
 
   // for future purpose
   // ignore: unused_element
-  static _write(ASN1Sequence timeStampReq) async {
+  _write() async {
     try {
-      Uint8List data = timeStampReq.encodedBytes;
+      Uint8List data = asn1sequence.encodedBytes;
       var hex2 =
           data.map((e) => "${e.toRadixString(16).padLeft(2, '0')} ").join();
       debugPrint(hex2);
