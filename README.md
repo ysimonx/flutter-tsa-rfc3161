@@ -2,7 +2,7 @@
 
 
 tested on macos and android configurations
-(will fails with flutter web if TSA host does not provide CORS header)
+(fails with flutter web if TSA host does not provide CORS header)
 
 
 ```
