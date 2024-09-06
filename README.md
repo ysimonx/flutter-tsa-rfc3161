@@ -22,7 +22,7 @@ import 'TSARequest.dart';
       // for a string use 
       // TSARequest tsq = TSARequest.fromString(s: "yannick", algorithm: TSAHashAlgo.sha512);
       
-      Response r = await tsq.run(hostname: "http://timestamp.digicert.com");
+      Response response = await tsq.run(hostname: "http://timestamp.digicert.com");
       
     } on Exception catch (e) {
       debugPrint(e.toString());
