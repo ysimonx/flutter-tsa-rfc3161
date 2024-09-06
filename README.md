@@ -29,7 +29,7 @@ import 'TSARequest.dart';
     }
 ```
 
-Dio Response r : contains the http response from the hostnam
+Dio Response r : contains the http response from the timestamp server authority
 
 
 
