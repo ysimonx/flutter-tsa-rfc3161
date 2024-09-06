@@ -5,6 +5,8 @@
 
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
+
 import 'package:crypto/crypto.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
@@ -52,9 +54,33 @@ class _MyHomePageState extends State<MyHomePage> {
       _errorMessage = "";
     });
 
-    String s = "test eliaz coucou\n\n\n";
+    setState(() {
+      _errorMessage = "choosing a file ...";
+    });
 
-    Digest digest = sha256.convert(s.codeUnits);
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result == null) {
+      return;
+    }
+
+    File file = File(result.files.single.path!);
+
+    setState(() {
+      _errorMessage = "file reading ...";
+    });
+
+    List<int> imageBytes = file.readAsBytesSync();
+
+    setState(() {
+      _errorMessage = "processing file's sha256  ...";
+    });
+
+    Digest digest = sha256.convert(imageBytes);
+
+    setState(() {
+      _errorMessage = "sha256  = ${digest.toString()} ...";
+    });
 
     // build Seq Algorithm
     ASN1Sequence seqAlgorithm = getSeqAlgorithm();
@@ -80,11 +106,19 @@ class _MyHomePageState extends State<MyHomePage> {
     // call digicert's timestamp server
     String tsaUrl = 'http://timestamp.digicert.com'; // URL du serveur TSA
 
+    setState(() {
+      _iStatusCode = 0;
+      _errorMessage = "calling ${tsaUrl} for timestamp...";
+    });
+
     try {
       Response response = await dio.post(tsaUrl,
           data: timeStampReq.encodedBytes, options: options);
       print(response);
       _iStatusCode = response.statusCode;
+      if (response.statusCode == 200) {
+        _errorMessage = "timestamp is ok !";
+      }
     } on DioException catch (e) {
       if (e.response != null) {
         _iStatusCode = e.response!.statusCode;
@@ -148,9 +182,16 @@ class _MyHomePageState extends State<MyHomePage> {
 ASN1Sequence getSeqMessageImprintSequence(
     ASN1Sequence seqAlgorithm, Digest digest) {
   //
-  Uint8List uint8list = Uint8List.fromList(digest.bytes);
 
-  ASN1Object hashedText = ASN1Object.fromBytes(uint8list);
+  var intList = digest.bytes.toList();
+
+  // List<int> intList = digest.bytes;
+  intList.insert(0, 0x04);
+  intList.insert(1, 0x20);
+
+  Uint8List uint8list = Uint8List.fromList(intList);
+
+  ASN1Object hashedText = ASN1OctetString.fromBytes(uint8list);
 
   ASN1Sequence messageImprintSequence = ASN1Sequence();
 
@@ -159,8 +200,8 @@ ASN1Sequence getSeqMessageImprintSequence(
   //
   // why must I add this ? -- BEGIN --
   //
-  ASN1Object strange = ASN1Object.fromBytes(Uint8List.fromList([0x04, 0x20]));
-  messageImprintSequence.add(strange);
+  // ASN1Object strange = ASN1Object.fromBytes(Uint8List.fromList([0x04, 0x20]));
+  // messageImprintSequence.add(strange);
   //
   // why must I add this ? -- END --
   //
@@ -188,10 +229,11 @@ ASN1Sequence getSeqAlgorithm() {
     1
   ]); // SHA-256 OID sous forme de liste d'entiers
 
-  var paramsAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList([0x5, 0x0]));
+  // var paramsAsn1Obj = ASN1Object.fromBytes(Uint8List.fromList([0x5, 0x0]));
+  var paramsAns1Null = ASN1Null();
 
   ASN1Sequence seqAlgorithm = ASN1Sequence();
   seqAlgorithm.add(sha256OidHS);
-  seqAlgorithm.add(paramsAsn1Obj);
+  seqAlgorithm.add(paramsAns1Null);
   return seqAlgorithm;
 }
