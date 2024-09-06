@@ -44,10 +44,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int? _iStatusCode = 0;
+  String? _errorMessage = "";
 
   void _timestamp() async {
     setState(() {
       _iStatusCode = 0;
+      _errorMessage = "";
     });
 
     String s = "test eliaz coucou\n\n\n";
@@ -86,7 +88,13 @@ class _MyHomePageState extends State<MyHomePage> {
     } on DioException catch (e) {
       if (e.response != null) {
         _iStatusCode = e.response!.statusCode;
+      } else {
+        _errorMessage = e.message;
+        _errorMessage =
+            "${_errorMessage}\n\nthis flutter app is unable to run on web flutter (because of missing digicert's CORS headers)\n,\n please choose another simulator, android or macos are perfect";
       }
+    } on Exception catch (e) {
+      _errorMessage = e.toString();
     }
     setState(() {});
   }
@@ -123,7 +131,8 @@ class _MyHomePageState extends State<MyHomePage> {
               'push button for timestamp',
             ),
             if (_iStatusCode != 0)
-              Text("status code from tsa server = $_iStatusCode")
+              Text("status code from tsa server = $_iStatusCode"),
+            if (_errorMessage != "") Text(_errorMessage!)
           ],
         ),
       ),
