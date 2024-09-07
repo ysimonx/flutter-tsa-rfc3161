@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:asn1lib/asn1lib.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'tsa_hash_algo.dart';
+import 'tsa_common.dart';
 
-class TSARequest {
-  late ASN1Sequence _asn1sequence;
-
+class TSARequest extends TSACommon {
   late int algorithm;
   int? nonce;
   bool? certReq;
@@ -19,10 +15,6 @@ class TSARequest {
   String? filepath;
 
   TSARequest();
-
-  ASN1Sequence get asn1sequence {
-    return _asn1sequence;
-  }
 
   Future<Response> run({required String hostname, String? credentials}) async {
     // send request to TSA Server
@@ -36,7 +28,8 @@ class TSARequest {
       headers.addAll({'authorization': basicAuth});
     }
 
-    Options options = Options(headers: headers);
+    Options options =
+        Options(headers: headers, responseType: ResponseType.bytes);
 
     final dio = Dio();
 
@@ -105,7 +98,7 @@ class TSARequest {
       timeStampReq.add(asncertReq);
     }
 
-    _asn1sequence = timeStampReq;
+    asn1sequence = timeStampReq;
   }
 
   static _getSeqMessageImprintSequence(
@@ -130,28 +123,5 @@ class TSARequest {
     messageImprintSequence.add(seqAlgorithm);
     messageImprintSequence.add(hashedText);
     return messageImprintSequence;
-  }
-
-  void hexaPrint() {
-    Uint8List data = asn1sequence.encodedBytes;
-    var hex2 =
-        data.map((e) => "${e.toRadixString(16).padLeft(2, '0')} ").join();
-    debugPrint(hex2);
-  }
-
-  write(String filename) async {
-    try {
-      Uint8List data = asn1sequence.encodedBytes;
-      var hex2 =
-          data.map((e) => "${e.toRadixString(16).padLeft(2, '0')} ").join();
-      debugPrint(hex2);
-
-      Directory root = await getTemporaryDirectory();
-      File file = await File('${root.path}/$filename').create();
-      debugPrint(file.path);
-      file.writeAsBytesSync(data);
-    } catch (e) {
-      debugPrint(e.toString());
-    }
   }
 }

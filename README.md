@@ -23,7 +23,10 @@ import 'package:tsa_rfc3161/tsa_rfc3161.dart';
       // TSARequest tsq = TSARequest.fromString(s: "yannick", algorithm: TSAHashAlgo.sha512);
       
       Response response = await tsq.run(hostname: "http://timestamp.digicert.com");
-      
+
+      if (response.statusCode == 200) {
+        TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
+      }
     } on Exception catch (e) {
       debugPrint(e.toString());
     }

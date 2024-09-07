@@ -81,6 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
       _iStatusCode = response.statusCode;
       if (_iStatusCode == 200) {
         _errorMessage = "good";
+        TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
+        tsr.hexaPrint();
       } else {
         _errorMessage = "error";
       }
