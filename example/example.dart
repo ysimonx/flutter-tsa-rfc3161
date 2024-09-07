@@ -1,8 +1,3 @@
-// cf https://pub.dev/documentation/asn1lib/latest/asn1lib/ASN1Sequence-class.html
-// cf https://github.com/pyauth/tsp-client
-// cf https://chatgpt.com/c/94d7db76-cf74-4d96-8075-fdb2547605c3
-// cf le bas de https://gist.github.com/hnvn/38ef37566471f1135773b5426fb73011
-
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart';
