@@ -66,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
           nonce: nonceValue,
           certReq: true);
 
+      tsq.hexaPrint();
       // tsq.write("test.tsq");
 
       Response response =

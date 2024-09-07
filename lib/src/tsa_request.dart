@@ -132,8 +132,13 @@ class TSARequest {
     return messageImprintSequence;
   }
 
-  // for future purpose
-  // ignore: unused_element
+  void hexaPrint() {
+    Uint8List data = asn1sequence.encodedBytes;
+    var hex2 =
+        data.map((e) => "${e.toRadixString(16).padLeft(2, '0')} ").join();
+    debugPrint(hex2);
+  }
+
   write(String filename) async {
     try {
       Uint8List data = asn1sequence.encodedBytes;
