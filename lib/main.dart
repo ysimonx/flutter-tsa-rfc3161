@@ -72,16 +72,40 @@ class _MyHomePageState extends State<MyHomePage> {
       Response response =
           await tsq.run(hostname: "http://timestamp.digicert.com");
 
-      /* // for Certigna server
+      /*
+      
+      example with Certigna server
       Response response = await tsq.run(
           hostname: "https://timestamp.dhimyotis.com/api/v1/",
           credentials: "$user:$password");
+          
       */
 
       _iStatusCode = response.statusCode;
       if (_iStatusCode == 200) {
         _errorMessage = "good";
         TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
+        tsr.write("test.tsr");
+        /* 
+        openssl ts -reply -in test.tsr -text provides
+        
+        Version: 1
+        Policy OID: 2.16.840.1.114412.7.1
+        Hash Algorithm: sha512
+        Message data:
+            0000 - 89 bd 94 b7 92 4b 2f 16-d8 c5 c0 0f 11 02 12 b1   .....K/.........
+            0010 - bb b1 5a bb 72 7d be 06-33 bf 7d d0 9f 6f d6 07   ..Z.r}..3.}..o..
+            0020 - 02 4d a3 df d6 7b cf c7-89 e2 2f 2d d9 fa 9b c3   .M...{..../-....
+            0030 - 39 9a d4 34 11 e1 11 d8-c6 7b a7 a0 b4 96 42 2d   9..4.....{....B-
+        Serial number: 0x4194EF54150D2496B2C3F1A78D82C41B
+        Time stamp: Sep  7 08:37:47 2024 GMT
+        Accuracy: unspecified
+        Ordering: no
+        Nonce: 0x0191CBA1D914
+        TSA: unspecified
+        Extensions:
+        */
+
         tsr.hexaPrint();
       } else {
         _errorMessage = "error";
