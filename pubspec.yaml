@@ -1,9 +1,15 @@
 name: tsa_rfc3161
 description: "Flutter TSA (Time Stamping Authority)  client rfc3161."
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+homepage: https://github.com/ysimonx/tsa_rfc3161
 
-version: 1.0.0+1
+topics: 
+  - tsa
+  - rfc3161
+  - digicert
+  - certigna
+  - timestamp
+version: 1.0.1
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
