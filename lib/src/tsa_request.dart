@@ -10,12 +10,13 @@ import 'package:path_provider/path_provider.dart';
 import 'tsa_hash_algo.dart';
 
 class TSARequest {
-  String? filepath;
+  late ASN1Sequence _asn1sequence;
 
   late int algorithm;
-  late ASN1Sequence _asn1sequence;
   int? nonce;
   bool? certReq;
+
+  String? filepath;
 
   TSARequest();
 
@@ -69,7 +70,7 @@ class TSARequest {
     ASN1Sequence messageImprint =
         _getSeqMessageImprintSequence(message: fileBytes, algorithm: algorithm);
 
-    _init(messageImprint: messageImprint);
+    _init(messageImprint: messageImprint, nonce: nonce, certReq: certReq);
   }
 
   TSARequest.fromString(
@@ -78,7 +79,7 @@ class TSARequest {
     ASN1Sequence messageImprint = _getSeqMessageImprintSequence(
         message: s.codeUnits, algorithm: algorithm);
 
-    _init(messageImprint: messageImprint);
+    _init(messageImprint: messageImprint, nonce: nonce, certReq: certReq);
   }
 
   void _init(
@@ -89,14 +90,18 @@ class TSARequest {
     timeStampReq.add(version);
     timeStampReq.add(messageImprint);
 
+    // policyId
+    // timeStampReq.add(ASN1Null());
+
     if (nonce != null) {
       ASN1Integer asn1nonce = ASN1Integer(BigInt.from(nonce));
       timeStampReq.add(asn1nonce);
+      //  should be similar to 02 08 38 8e bc 2c d8 bf 32 41
+      //                       02 08 61 d0 dd 7e 47 a9 16 0a
     }
     if (certReq != null) {
       ASN1Boolean asncertReq = ASN1Boolean(
           certReq); // Demande d'inclusion des certificats dans la réponse
-
       timeStampReq.add(asncertReq);
     }
 
@@ -129,7 +134,7 @@ class TSARequest {
 
   // for future purpose
   // ignore: unused_element
-  _write() async {
+  write(String filename) async {
     try {
       Uint8List data = asn1sequence.encodedBytes;
       var hex2 =
@@ -137,7 +142,7 @@ class TSARequest {
       debugPrint(hex2);
 
       Directory root = await getTemporaryDirectory();
-      File file = await File('${root.path}/file.tsq').create();
+      File file = await File('${root.path}/$filename').create();
       debugPrint(file.path);
       file.writeAsBytesSync(data);
     } catch (e) {

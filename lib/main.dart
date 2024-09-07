@@ -62,9 +62,11 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       TSARequest tsq = TSARequest.fromFile(
           filepath: file.path,
-          algorithm: TSAHashAlgo.sha512,
+          algorithm: TSAHashAlgo.sha256,
           nonce: nonceValue,
           certReq: true);
+
+      // tsq.write("test.tsq");
 
       Response response =
           await tsq.run(hostname: "http://timestamp.digicert.com");
