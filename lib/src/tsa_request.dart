@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -22,11 +23,19 @@ class TSARequest {
     return _asn1sequence;
   }
 
-  Future<Response> run({required String hostname}) async {
+  Future<Response> run({required String hostname, String? credentials}) async {
     // send request to TSA Server
 
-    Options options =
-        Options(headers: {'Content-Type': 'application/timestamp-query'});
+    Map<String, dynamic> headers = {
+      'Content-Type': 'application/timestamp-query'
+    };
+
+    if (credentials != null) {
+      String basicAuth = 'Basic ${base64.encode(utf8.encode(credentials))}';
+      headers.addAll({'authorization': basicAuth});
+    }
+
+    Options options = Options(headers: headers);
 
     final dio = Dio();
 

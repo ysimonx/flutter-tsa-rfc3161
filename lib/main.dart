@@ -69,6 +69,12 @@ class _MyHomePageState extends State<MyHomePage> {
       Response response =
           await tsq.run(hostname: "http://timestamp.digicert.com");
 
+      /* // for Certigna server
+      Response response = await tsq.run(
+          hostname: "https://timestamp.dhimyotis.com/api/v1/",
+          credentials: "$user:$password");
+      */
+
       _iStatusCode = response.statusCode;
       if (_iStatusCode == 200) {
         _errorMessage = "good";
