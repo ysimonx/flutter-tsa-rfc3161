@@ -1,7 +1,7 @@
 name: tsa_rfc3161
-description: "Flutter TSA (Time Stamping Authority)  client rfc3161."
+description: "This is a TSA (Time Stamping Authority) client/library RFC3161 for Flutter apps. With it, you can timestamp any files or any text message"
 
-homepage: https://github.com/ysimonx/tsa_rfc3161
+repository: https://github.com/ysimonx/tsa_rfc3161
 
 topics: 
   - tsa
@@ -9,7 +9,7 @@ topics:
   - digicert
   - certigna
   - timestamp
-version: 1.0.1
+version: 1.0.2
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
