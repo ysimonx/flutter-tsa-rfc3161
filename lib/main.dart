@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Extensions:
         */
 
-        tsr.hexaPrint();
+        // tsr.hexaPrint();
       } else {
         _errorMessage = "error";
       }
