@@ -26,6 +26,9 @@ class TSACommon {
       "2.5.4.10": "organizationName",
       "2.5.4.6": "countryName",
       "1.2.840.113549.1.9.16.1.4": "id-ct-TSTInfo",
+      "2.16.840.1.114412.7": "time-stamping",
+      "2.16.840.1.114412.7.1": "time-stamping",
+      "1.2.840.113549.1.7.2": "signedData"
     };
 
     if (oids.containsKey(oid)) {
@@ -59,6 +62,7 @@ class TSACommon {
     if (obj is ASN1Null) {
       return "ASN1Null";
     }
+
     return "ASN1Object : length ${obj.totalEncodedByteLength}";
   }
 
@@ -93,5 +97,20 @@ class TSACommon {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  ASN1Object fixASN1Object(ASN1Object obj) {
+    if (obj.tag == 160) {
+      int offset = 0;
+      while (obj.encodedBytes[offset] != 48) {
+        offset++;
+      }
+      Uint8List content2 = obj.encodedBytes.sublist(offset);
+      ASN1Parser parser = ASN1Parser(content2, relaxedParsing: true);
+      ASN1Object result = parser.nextObject();
+      return result;
+    }
+
+    return obj;
   }
 }

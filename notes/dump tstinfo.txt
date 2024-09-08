@@ -1,0 +1,171 @@
+    ASN1Sequence
+
+        ASN1Integer : 1 ==>  selon rfc version
+
+        ASN1ObjectIdentifier : 2.16.840.1.114412.7.1 - time-stamping ==>  selon rfc TSAPolicyId
+
+        ASN1Sequence
+
+            ASN1Sequence
+
+                ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.3 - sha512
+
+                ASN1Null
+
+            ASN1OctetString  : length 66 ===> ???
+
+        ASN1Integer : 9223372036854775807 ==> serial number ??? non, en hexa, ca fait 8000000000000000
+
+        ASN1Object : length 17 ===> ????
+
+        ASN1Integer : 1725829752012 ==>  selon rfc nonce value, je confirme
+
+
+
+TSTInfo ::= SEQUENCE  {
+   version                      INTEGER  { v1(1) },
+   policy                       TSAPolicyId,
+   messageImprint               MessageImprint,
+     -- MUST have the same value as the similar field in
+     -- TimeStampReq
+   serialNumber                 INTEGER,
+    -- Time-Stamping users MUST be ready to accommodate integers
+    -- up to 160 bits.
+   genTime                      GeneralizedTime,
+   accuracy                     Accuracy                 OPTIONAL,
+   ordering                     BOOLEAN             DEFAULT FALSE,
+   nonce                        INTEGER                  OPTIONAL,
+     -- MUST be present if the similar field was present
+     -- in TimeStampReq.  In that case it MUST have the same value.
+   tsa                          [0] GeneralName          OPTIONAL,
+   extensions                   [1] IMPLICIT Extensions   OPTIONAL  }
+
+   The version field (currently v1) describes the version of the time-
+   stamp token.
+
+   Conforming time-stamping servers MUST be able to provide version 1
+   time-stamp tokens.
+
+   Among the optional fields, only the nonce field MUST be supported.
+
+   Conforming time-stamping requesters MUST be able to recognize version
+   1 time-stamp tokens with all the optional fields present, but are not
+   mandated to understand the semantics of any extension, if present.
+
+   The policy field MUST indicate the TSA's policy under which the
+   response was produced.  If a similar field was present in the
+   TimeStampReq, then it MUST have the same value, otherwise an error
+   (unacceptedPolicy) MUST be returned.  This policy MAY include the
+   following types of information (although this list is certainly not
+   exhaustive):
+
+   *  The conditions under which the time-stamp token may be used.
+
+   *  The availability of a time-stamp token log, to allow later
+      verification that a time-stamp token is authentic.
+
+   The messageImprint MUST have the same value as the similar field in
+   TimeStampReq, provided that the size of the hash value matches the
+   expected size of the hash algorithm identified in hashAlgorithm.
+
+   The serialNumber field is an integer assigned by the TSA to each
+   TimeStampToken.  It MUST be unique for each TimeStampToken issued by
+   a given TSA (i.e., the TSA name and serial number identify a unique
+   TimeStampToken).  It should be noticed that the property MUST be
+   preserved even after a possible interruption (e.g., crash) of the
+   service.
+
+   genTime is the time at which the time-stamp token has been created by
+   the TSA.  It is expressed as UTC time (Coordinated Universal Time) to
+   reduce confusion with the local time zone use.  UTC is a time scale,
+   based on the second (SI), as defined and recommended by the CCIR, and
+   maintained by the Bureau International des Poids et Mesures (BIPM). A
+   synonym is "Zulu" time which is used by the civil aviation and
+   represented by the letter "Z" (phonetically "Zulu").
+
+   The ASN.1 GeneralizedTime syntax can include fraction-of-second
+   details.  Such syntax, without the restrictions from [RFC 2459]
+   Section 4.1.2.5.2, where GeneralizedTime is limited to represent the
+   time with a granularity of one second, may be used here.
+
+   GeneralizedTime values MUST include seconds.  However, when there is
+   no need to have a precision better than the second, then
+   GeneralizedTime with a precision limited to one second SHOULD be used
+   (as in [RFC 2459]).
+
+   The syntax is: YYYYMMDDhhmmss[.s...]Z
+   Example: 19990609001326.34352Z
+
+   X.690 | ISO/IEC 8825-1 provides the following restrictions for a
+   DER-encoding.
+
+   The encoding MUST terminate with a "Z" (which means "Zulu" time). The
+   decimal point element, if present, MUST be the point option ".". The
+   fractional-seconds elements, if present, MUST omit all trailing 0's;
+   if the elements correspond to 0, they MUST be wholly omitted, and the
+   decimal point element also MUST be omitted.
+
+   Midnight (GMT) shall be represented in the form: "YYYYMMDD000000Z"
+   where "YYYYMMDD" represents the day following the midnight in
+   question.
+
+   Here are a few examples of valid representations:
+
+      "19920521000000Z"
+      "19920622123421Z"
+      "19920722132100.3Z"
+
+   accuracy represents the time deviation around the UTC time contained
+   in GeneralizedTime.
+
+   Accuracy ::= SEQUENCE {
+         seconds        INTEGER              OPTIONAL,
+         millis     [0] INTEGER  (1..999)    OPTIONAL,
+         micros     [1] INTEGER  (1..999)    OPTIONAL  }
+
+   If either seconds, millis or micros is missing, then a value of zero
+   MUST be taken for the missing field.
+
+   By adding the accuracy value to the GeneralizedTime, an upper limit
+   of the time at which the time-stamp token has been created by the TSA
+   can be obtained.  In the same way, by subtracting the accuracy to the
+   GeneralizedTime, a lower limit of the time at which the time-stamp
+   token has been created by the TSA can be obtained.
+
+   accuracy can be decomposed in seconds, milliseconds (between 1-999)
+   and microseconds (1-999), all expressed as integer.
+
+   When the accuracy optional field is not present, then the accuracy
+   may be available through other means, e.g., the TSAPolicyId.
+
+   If the ordering field is missing, or if the ordering field is present
+   and set to false, then the genTime field only indicates the time at
+   which the time-stamp token has been created by the TSA.  In such a
+   case, the ordering of time-stamp tokens issued by the same TSA or
+   different TSAs is only possible when the difference between the
+   genTime of the first time-stamp token and the genTime of the second
+   time-stamp token is greater than the sum of the accuracies of the
+   genTime for each time-stamp token.
+
+   If the ordering field is present and set to true, every time-stamp
+   token from the same TSA can always be ordered based on the genTime
+   field, regardless of the genTime accuracy.
+
+   The nonce field MUST be present if it was present in the
+   TimeStampReq. In such a case it MUST equal the value provided in the
+   TimeStampReq structure.
+
+   The purpose of the tsa field is to give a hint in identifying the
+   name of the TSA.  If present, it MUST correspond to one of the
+   subject names included in the certificate that is to be used to
+   verify the token.  However, the actual identification of the entity
+   that signed the response will always occur through the use of the
+   certificate identifier (ESSCertID Attribute) inside a
+   SigningCertificate attribute which is part of the signerInfo (See
+   Section 5 of [ESS]).
+
+   extensions is a generic way to add additional information in the
+   future.  Extensions is defined in [RFC 2459].
+
+   Particular extension field types may be specified in standards or may
+   be defined and registered by any organization or community.
