@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.0.3
+
+- Attempt to parse http response
+
 ### 1.0.2
 
 - Pub dev recommandations 2

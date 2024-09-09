@@ -1,5 +1,6 @@
 import 'package:asn1lib/asn1lib.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import 'tsa_common.dart';
 
@@ -19,7 +20,9 @@ class TSAResponse extends TSACommon {
     asn1sequenceproto = asn1sequence;
     asn1sequenceproto = fix(asn1sequenceproto) as ASN1Sequence;
     String result = explore(asn1sequenceproto, 0);
-    print("\n$result");
+    if (kDebugMode) {
+      print("\n$result");
+    }
 
     // parse niv 1
     /*

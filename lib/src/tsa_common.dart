@@ -42,14 +42,6 @@ class TSACommon {
     }
 
     if (obj is ASN1OctetString) {
-      String decoded = "";
-      Uint8List bytes = obj.valueBytes();
-      try {
-        decoded = "'${utf8.decode(bytes)}'";
-      } catch (e) {
-        // debugPrint(e.toString());
-      }
-
       return "ASN1OctetString  : length ${obj.totalEncodedByteLength}";
     }
     if (obj is ASN1Null) {
