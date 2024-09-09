@@ -59,7 +59,7 @@ authentication is available
 ## Note 4
 ```
 TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
-        tsr.write("test.tsr");
+tsr.write("test.tsr");
 ```
 
 you have now a test.tsr you can look with a openssl cli command
@@ -89,6 +89,14 @@ The TSAResponse class is provided as an attempt. ASN.1 data are very difficult t
 Nowadays, you can parse the http response and present your data like this
 
 ```
+
+  TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
+
+
+
+
+
+
     ASN1Sequence
         ASN1Sequence
             ASN1Integer : 0 : 0 0
