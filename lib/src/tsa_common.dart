@@ -101,11 +101,18 @@ class TSACommon {
   }
 
   ASN1Object fixASN1Object(ASN1Object obj) {
-    if (obj.tag == 160) {
+    if (obj.tag == 160 || obj.tag == 163) {
       int offset = 0;
+
+      // je recherche le prochain objet
       while (obj.encodedBytes[offset] != 48) {
+        // c'est pourri, mais ca peut marcher
         offset++;
+        if (offset == obj.encodedBytes.length) {
+          return obj;
+        }
       }
+
       Uint8List content2 = obj.encodedBytes.sublist(offset);
       ASN1Parser parser = ASN1Parser(content2, relaxedParsing: true);
       ASN1Object result = parser.nextObject();
@@ -121,18 +128,18 @@ class TSACommon {
       for (var i = 0; i < result.elements.length; i++) {
         ASN1Object element = result.elements.elementAt(i);
         print("TAG : ${element.tag}");
-        if (element.tag == 160) {
-          element = fixASN1Object(element);
-        }
+
+        element = fixASN1Object(element);
+
         result.elements[i] = fix(element);
       }
     }
     if (result is ASN1Set) {
       for (var i = 0; i < result.elements.length; i++) {
         ASN1Object element = result.elements.elementAt(i);
-        if (element.tag == 160) {
-          element = fixASN1Object(element);
-        }
+
+        element = fixASN1Object(element);
+
         result.elements.remove(element);
         result.elements.add(fix(element));
       }
