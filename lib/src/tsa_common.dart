@@ -39,7 +39,10 @@ class TSACommon {
       "2.5.29.35": "authorityKeyIdentifier",
       "2.5.29.32": "certificatePolicies",
       "2.5.29.37": "extKeyUsage",
-      "2.5.29.15": "keyUsage"
+      "2.5.29.15": "keyUsage",
+      "1.2.840.113549.1.9.5": "signing-time",
+      "1.2.840.113549.1.9.16.2.12": "signing-certificate",
+      "1.2.840.113549.1.9.4": "id-messageDigest"
     };
 
     if (oids.containsKey(oid)) {
@@ -150,11 +153,27 @@ class TSACommon {
         }
       }
 
-      Uint8List content2 = obj.encodedBytes.sublist(offset);
-      ASN1Parser parser = ASN1Parser(content2, relaxedParsing: true);
-      ASN1Object result = parser.nextObject();
+      Uint8List content = obj.encodedBytes.sublist(offset);
 
-      return result;
+      List<ASN1Object> elements = [];
+      int position = 0;
+      int remaining = content.length;
+
+      while (remaining > 0) {
+        Uint8List content = obj.encodedBytes.sublist(offset + position);
+        ASN1Parser parser = ASN1Parser(content, relaxedParsing: true);
+        ASN1Object result = parser.nextObject();
+        elements.add(result);
+        position = position + result.totalEncodedByteLength;
+        remaining = remaining - position;
+      }
+
+      if (elements.length == 1) {
+        return elements[0];
+      }
+      ASN1Sequence newseq = ASN1Sequence();
+      newseq.elements = elements;
+      return newseq;
     }
 
     return obj;
