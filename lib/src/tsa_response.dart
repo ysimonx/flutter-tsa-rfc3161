@@ -19,7 +19,7 @@ class TSAResponse extends TSACommon {
     asn1sequenceproto = asn1sequence;
     asn1sequenceproto = fix(asn1sequenceproto) as ASN1Sequence;
     String result = explore(asn1sequenceproto, 0);
-    print(result);
+    print("\n$result");
 
     // parse niv 1
     /*
