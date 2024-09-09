@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -29,7 +30,16 @@ class TSACommon {
       "2.16.840.1.114412.7": "time-stamping",
       "2.16.840.1.114412.7.1": "time-stamping",
       "1.2.840.113549.1.7.2": "signedData",
-      "1.2.840.113549.1.1.11": "sha256WithRSAEncryption"
+      "1.2.840.113549.1.1.11": "sha256WithRSAEncryption",
+      "2.5.29.19": "basicConstraints",
+      "1.2.840.113549.1.9.3": "contentType",
+      "1.3.6.1.5.5.7.1.1": "authorityInfoAccess",
+      "2.5.29.31": "cRLDistributionPoints",
+      "2.5.29.14": "subjectKeyIdentifier",
+      "2.5.29.35": "authorityKeyIdentifier",
+      "2.5.29.32": "certificatePolicies",
+      "2.5.29.37": "extKeyUsage",
+      "2.5.29.15": "keyUsage"
     };
 
     if (oids.containsKey(oid)) {
@@ -43,28 +53,51 @@ class TSACommon {
     if (obj is ASN1Sequence) {
       return "ASN1Sequence";
     }
+
     if (obj is ASN1Set) {
       return "ASN1Set";
     }
+
     if (obj is ASN1Integer) {
-      return "ASN1Integer : ${obj.intValue}";
+      return "ASN1Integer : ${obj.intValue} : ${obj.valueAsBigInteger} ${obj.valueAsBigInteger.toRadixString(16)}";
     }
+
     if (obj is ASN1ObjectIdentifier) {
       String label = nameFromOID(obj.identifier);
-
       return "ASN1ObjectIdentifier : ${obj.identifier} - $label";
     }
+
     if (obj is ASN1PrintableString) {
       return "ASN1PrintableString : ${obj.stringValue}";
     }
+
     if (obj is ASN1OctetString) {
-      return "ASN1OctetString  : length ${obj.totalEncodedByteLength}";
+      String decoded = "";
+      Uint8List bytes = obj.valueBytes();
+      try {
+        decoded = "'${utf8.decode(bytes)}'";
+      } catch (e) {
+        // debugPrint(e.toString());
+      }
+
+      return "ASN1OctetString  : length ${obj.totalEncodedByteLength} $decoded";
     }
     if (obj is ASN1Null) {
       return "ASN1Null";
     }
 
-    return "ASN1Object : length ${obj.totalEncodedByteLength}";
+    if (obj is ASN1GeneralizedTime) {
+      return "ASN1GeneralizedTime : ${obj.dateTimeValue}";
+    }
+
+    String decoded = "";
+    Uint8List bytes = obj.valueBytes();
+    try {
+      decoded = "'${utf8.decode(bytes)}'";
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return "ASN1Object : length ${obj.totalEncodedByteLength} $decoded";
   }
 
   String ident(n) => List.filled(n + 1, '    ').join();
@@ -73,15 +106,15 @@ class TSACommon {
     level ??= 0;
 
     String s = "${ident(level)}${tagName(obj)}\n";
-
+    print(s);
     if (obj is ASN1Sequence) {
       for (var i = 0; i < obj.elements.length; i++) {
-        s = "$s\n${explore(obj.elements[i], level + 1)}";
+        s = "$s${explore(obj.elements[i], level + 1)}";
       }
     }
     if (obj is ASN1Set) {
       for (var i = 0; i < obj.elements.length; i++) {
-        s = "$s\n${explore(obj.elements.elementAt(i), level + 1)}";
+        s = "$s${explore(obj.elements.elementAt(i), level + 1)}";
       }
     }
     return s;
@@ -101,6 +134,10 @@ class TSACommon {
   }
 
   ASN1Object fixASN1Object(ASN1Object obj) {
+    if (obj is ASN1OctetString) {
+      print("yo");
+    }
+
     if (obj.tag == 160 || obj.tag == 163) {
       int offset = 0;
 
@@ -116,6 +153,7 @@ class TSACommon {
       Uint8List content2 = obj.encodedBytes.sublist(offset);
       ASN1Parser parser = ASN1Parser(content2, relaxedParsing: true);
       ASN1Object result = parser.nextObject();
+
       return result;
     }
 

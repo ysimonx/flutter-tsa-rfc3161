@@ -18,10 +18,10 @@ class TSAHashAlgo {
     return seqAlgorithm;
   }
 
-  static ASN1Object getASN1ObjectHashed(Digest digest, List<int> sha256lng) {
+  static ASN1Object getASN1ObjectHashed(Digest digest, List<int> lng) {
     List<int> intList = digest.bytes.toList();
-    for (var i = 0; i < sha256lng.length; i++) {
-      intList.insert(i, sha256lng[i]);
+    for (var i = 0; i < lng.length; i++) {
+      intList.insert(i, lng[i]);
     }
     Uint8List uint8list = Uint8List.fromList(intList);
     ASN1Object result = ASN1OctetString.fromBytes(uint8list);
@@ -30,9 +30,9 @@ class TSAHashAlgo {
 }
 
 class TSAHashAlgoSHA256 extends TSAHashAlgo {
-  static List<int> oid = [2, 16, 840, 1, 101, 3, 4, 2, 3];
+  static List<int> oid = [2, 16, 840, 1, 101, 3, 4, 2, 1];
 
-  static List<int> sha256lng = [0x04, 0x40];
+  static List<int> sha256lng = [0x04, 0x20];
 
   TSAHashAlgoSHA256() : super();
 
@@ -41,7 +41,7 @@ class TSAHashAlgoSHA256 extends TSAHashAlgo {
   }
 
   static ASN1Object getASN1ObjectHashed({required List<int> message}) {
-    Digest digest = sha512.convert(message);
+    Digest digest = sha256.convert(message);
     return TSAHashAlgo.getASN1ObjectHashed(digest, sha256lng);
   }
 }

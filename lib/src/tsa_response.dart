@@ -6,15 +6,7 @@ import 'tsa_common.dart';
 class TSAResponse extends TSACommon {
   late Response response;
 
-  late ASN1Sequence PKIStatusInfo;
-  late ASN1Sequence timeStampToken;
-
-  late ASN1ObjectIdentifier contentType;
-
   late ASN1Sequence content;
-
-  late ASN1Set seqTSTInfo;
-
   late ASN1Sequence asn1sequenceproto;
 
   TSAResponse();
@@ -39,7 +31,7 @@ class TSAResponse extends TSACommon {
                     statusString  PKIFreeText     OPTIONAL,
                     failInfo      PKIFailureInfo  OPTIONAL  }
 
-    timeStampToken  [1] = ASN1Sequence (Seq[ObjectIdentifier(1.2.840.113549.1.7.2) ASN1Object(tag=a0 valueByteLength=5988) startpos=4 bytes=[0xa0, 0x82, 0x17, 0x64, 0x3…)
+    timeStampToken  [1] = ASN1Sequence (Seq[ObjectIdentifier(1.2.840.113549.1.7.2) ASN1Object(tag=a0 valueBteLength=5988) startpos=4 bytes=[0xa0, 0x82, 0x17, 0x64, 0x3…)
 
                     OPTIONAL
 

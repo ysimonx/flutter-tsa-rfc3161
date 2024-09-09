@@ -42,9 +42,9 @@
 
                         ASN1Integer : 9223372036854775807
 
-                        ASN1Object : length 17
+                        ASN1Object : length 17 '20240909081736Z' (timestamp !!)
 
-                        ASN1Integer : 1725866019881
+                        ASN1Integer : 1725866019881 (nonce ?)
 
                 ASN1Set
 
@@ -90,7 +90,7 @@
 
                         ASN1Sequence
 
-                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.3 - unknown
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.3 - contentType
 
                             ASN1Set
 
