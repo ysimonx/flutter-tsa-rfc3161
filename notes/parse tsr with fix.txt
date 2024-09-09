@@ -1,0 +1,105 @@
+    ASN1Sequence
+
+        ASN1Sequence
+
+            ASN1Integer : 0
+
+        ASN1Sequence
+
+            ASN1ObjectIdentifier : 1.2.840.113549.1.7.2 - signedData
+
+            ASN1Sequence
+
+                ASN1Integer : 3
+
+                ASN1Set
+
+                    ASN1Sequence
+
+                        ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.3 - sha512
+
+                        ASN1Null
+
+                ASN1Sequence
+
+                    ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
+
+                    ASN1Sequence
+
+                        ASN1Integer : 1
+
+                        ASN1ObjectIdentifier : 2.16.840.1.114412.7.1 - time-stamping
+
+                        ASN1Sequence
+
+                            ASN1Sequence
+
+                                ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.3 - sha512
+
+                                ASN1Null
+
+                            ASN1OctetString  : length 66
+
+                        ASN1Integer : 9223372036854775807
+
+                        ASN1Object : length 17
+
+                        ASN1Integer : 1725864558523
+
+                ASN1Set
+
+                    ASN1Sequence
+
+                        ASN1Integer : 1
+
+                        ASN1Sequence
+
+                            ASN1Sequence
+
+                                ASN1Set
+
+                                    ASN1Sequence
+
+                                        ASN1ObjectIdentifier : 2.5.4.6 - countryName
+
+                                        ASN1PrintableString : US
+
+                                ASN1Set
+
+                                    ASN1Sequence
+
+                                        ASN1ObjectIdentifier : 2.5.4.10 - organizationName
+
+                                        ASN1PrintableString : DigiCert, Inc.
+
+                                ASN1Set
+
+                                    ASN1Sequence
+
+                                        ASN1ObjectIdentifier : 2.5.4.3 - commonName
+
+                                        ASN1PrintableString : DigiCert Trusted G4 RSA4096 SHA256 TimeStamping CA
+
+                            ASN1Integer : 9223372036854775807
+
+                        ASN1Sequence
+
+                            ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.3 - sha512
+
+                            ASN1Null
+
+                        ASN1Sequence
+
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.3 - unknown
+
+                            ASN1Set
+
+                                ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
+
+                        ASN1Sequence
+
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.1.1 - rsaEncryption
+
+                            ASN1Null
+
+                        ASN1OctetString  : length 516

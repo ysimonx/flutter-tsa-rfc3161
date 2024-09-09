@@ -28,7 +28,8 @@ class TSACommon {
       "1.2.840.113549.1.9.16.1.4": "id-ct-TSTInfo",
       "2.16.840.1.114412.7": "time-stamping",
       "2.16.840.1.114412.7.1": "time-stamping",
-      "1.2.840.113549.1.7.2": "signedData"
+      "1.2.840.113549.1.7.2": "signedData",
+      "1.2.840.113549.1.1.11": "sha256WithRSAEncryption"
     };
 
     if (oids.containsKey(oid)) {
@@ -112,5 +113,30 @@ class TSACommon {
     }
 
     return obj;
+  }
+
+  ASN1Object fix(ASN1Object asn1sequenceproto) {
+    ASN1Object result = asn1sequenceproto;
+    if (result is ASN1Sequence) {
+      for (var i = 0; i < result.elements.length; i++) {
+        ASN1Object element = result.elements.elementAt(i);
+        print("TAG : ${element.tag}");
+        if (element.tag == 160) {
+          element = fixASN1Object(element);
+        }
+        result.elements[i] = fix(element);
+      }
+    }
+    if (result is ASN1Set) {
+      for (var i = 0; i < result.elements.length; i++) {
+        ASN1Object element = result.elements.elementAt(i);
+        if (element.tag == 160) {
+          element = fixASN1Object(element);
+        }
+        result.elements.remove(element);
+        result.elements.add(fix(element));
+      }
+    }
+    return result;
   }
 }
