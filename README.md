@@ -80,7 +80,7 @@ As the file.digicert.tsr contains the
  "Time stamp: Sep  7 08:37:47 2024 GMT"
 
 In addition to "file.txt", 
-you can provide the file "file.digicert.tsr" at anyone who need to be sure that file.txt has not been created or modifier after "Sep  7 08:37:47 2024 GMT"
+you can provide the file "file.digicert.tsr" at anyone who need to be sure that file.txt has not been created or modified after "Sep  7 08:37:47 2024 GMT"
 
 
 Anyone with both "file.txt" and "file.digicert.tsr" can verify the timestamp provided by digicert 
@@ -129,12 +129,14 @@ Hash algorithms: SHA1, SHA256, SHA384, SHA512
 ## Note 5 : 
 
 The TSAResponse class is provided as an attempt. ASN.1 data are very difficult to parse.
-Nowadays, you can parse the http response and present your data like this
+However, you can parse the http response into a ASN1Sequence
+and present your data like this
 
 ```
 
 TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
-String result = explore(asn1sequenceproto, 0);
+String result = explore(tsr.asnsequence, 0);
+
 result contains important data like
 "2024-09-10 12:53:47.000Z" as the timestamp
 "0x5519275DFC193E5D3B11154FF6F2E8EB" as the SerialNumber

@@ -7,9 +7,6 @@ import 'tsa_common.dart';
 class TSAResponse extends TSACommon {
   late Response response;
 
-  late ASN1Sequence content;
-  late ASN1Sequence asn1sequenceproto;
-
   TSAResponse();
 
   TSAResponse.fromHTTPResponse({required this.response}) {
@@ -17,7 +14,7 @@ class TSAResponse extends TSACommon {
     asn1sequence = parser.nextObject() as ASN1Sequence;
 
     // Poc fix
-    asn1sequenceproto = asn1sequence;
+    ASN1Sequence asn1sequenceproto = asn1sequence;
     asn1sequenceproto = fix(asn1sequenceproto) as ASN1Sequence;
     String result = explore(asn1sequenceproto, 0);
     if (kDebugMode) {

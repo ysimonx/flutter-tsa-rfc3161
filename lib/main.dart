@@ -88,7 +88,11 @@ class _MyHomePageState extends State<MyHomePage> {
       if (_iStatusCode == 200) {
         _errorMessage = "good";
         TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
+
+        // ASN1Sequence tsr.asn1sequence contains the parsed responses
+
         tsr.write("file.digicert.tsr");
+
         /* 
         openssl ts -reply -in test.tsr -text provides
         
@@ -108,8 +112,6 @@ class _MyHomePageState extends State<MyHomePage> {
         TSA: unspecified
         Extensions:
         */
-
-        // tsr.hexaPrint();
       } else {
         _errorMessage = "error";
       }

@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.0.8
+### 1.0.9
 
 - Better Integer Analysis (for SerialNumber)
 - improve README.md
