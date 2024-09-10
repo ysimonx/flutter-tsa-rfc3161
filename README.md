@@ -1,5 +1,10 @@
 # Flutter TSA (Time Stamping Authority)  client rfc3161
 
+<img width="999" alt="Capture d’écran 2024-09-10 à 22 04 44" src="https://github.com/user-attachments/assets/3fc4c3be-88cc-42e6-8a57-fb4c7f3f337c">
+
+
+
+## RFC3161 without openssl ! 
 
 tested on macos and android configurations with digicert and certigna tsa
 (fails with flutter web if TSA host does not provide CORS header)
