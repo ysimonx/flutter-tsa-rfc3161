@@ -17,10 +17,12 @@ import 'package:tsa_rfc3161/tsa_rfc3161.dart';
           algorithm: TSAHashAlgo.sha512,
           nonce: nonceValue,
           certReq: true);
-          
-      // for a string use 
+
       // TSARequest tsq = TSARequest.fromString(s: "yannick", algorithm: TSAHashAlgo.sha512);
-      
+
+      // for debugging purpose ;-)
+      // tsq.write("file.digicert.tsq");
+
       Response response = await tsq.run(hostname: "http://timestamp.digicert.com");
 
       if (response.statusCode == 200) {
