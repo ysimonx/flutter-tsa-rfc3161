@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.0.4
+### 1.0.5
 
 - Better http response parsing
 - SHA1 SHA384 SHA256 SHA512 hash algorithms
