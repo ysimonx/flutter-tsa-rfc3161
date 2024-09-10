@@ -62,11 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       TSARequest tsq = TSARequest.fromFile(
           filepath: file.path,
-          algorithm: TSAHashAlgo.sha256,
+          algorithm: TSAHashAlgo.sha1,
           nonce: nonceValue,
           certReq: true);
 
-      // tsq.hexaPrint();
+      // tsq.hexaPrint();,
+
       // tsq.write("test.tsq");
 
       Response response =

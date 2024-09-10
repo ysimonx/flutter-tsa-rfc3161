@@ -56,7 +56,12 @@ authentication is available
           credentials: "$user:$password");
 ```
 
-## Note 4
+## Note 4 
+
+Hash algorithms: SHA1, SHA256, SHA384, SHA512
+
+
+## Note 5
 ```
 TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
 tsr.write("test.tsr");

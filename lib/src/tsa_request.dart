@@ -117,6 +117,14 @@ class TSARequest extends TSACommon {
         seqAlgorithm = TSAHashAlgoSHA512.getASN1Sequence();
         hashedText = TSAHashAlgoSHA512.getASN1ObjectHashed(message: message);
         break;
+      case TSAHashAlgo.sha1:
+        seqAlgorithm = TSAHashAlgoSHA1.getASN1Sequence();
+        hashedText = TSAHashAlgoSHA1.getASN1ObjectHashed(message: message);
+        break;
+      case TSAHashAlgo.sha384:
+        seqAlgorithm = TSAHashAlgoSHA384.getASN1Sequence();
+        hashedText = TSAHashAlgoSHA384.getASN1ObjectHashed(message: message);
+        break;
       default:
         seqAlgorithm = TSAHashAlgoSHA256.getASN1Sequence();
         hashedText = TSAHashAlgoSHA256.getASN1ObjectHashed(message: message);
