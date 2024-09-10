@@ -19,7 +19,7 @@ class TSACommon {
     debugPrint(hex2);
   }
 
-  String formatTag(ASN1Object obj) {
+  static String formatTag(ASN1Object obj) {
     if (obj is ASN1Sequence) {
       return "ASN1Sequence";
     }
@@ -80,9 +80,9 @@ class TSACommon {
     return "ASN1Object : length ${obj.totalEncodedByteLength} $decoded";
   }
 
-  String ident(n) => List.filled(n + 1, '    ').join();
+  static String ident(n) => List.filled(n + 1, '    ').join();
 
-  String explore(ASN1Object obj, int? level) {
+  static String explore(ASN1Object obj, int? level) {
     level ??= 0;
 
     String s = "${ident(level)}${formatTag(obj)}\n";

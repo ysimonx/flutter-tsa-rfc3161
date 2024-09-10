@@ -1,6 +1,14 @@
 class TSAOid {
   TSAOid();
 
+  static String? nameToOID(String name) {
+    Map<String, String> oids = {"id-ct-TSTInfo": "1.2.840.113549.1.9.16.1.4"};
+    if (oids.containsKey(name)) {
+      return oids[name];
+    }
+    return null;
+  }
+
   static String nameFromOID(String? oid) {
     String result = "unknown";
     Map<String, String> oids = {

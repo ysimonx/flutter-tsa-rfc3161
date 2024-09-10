@@ -6,7 +6,9 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tsa_rfc3161/src/tsa_common.dart';
 
 import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'TSA Rfc3161'),
     );
   }
 }
@@ -43,10 +45,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int? _iStatusCode = 0;
   String? _errorMessage = "";
+  String? _dumpTSA = "";
+  String? _dumpTST = "";
 
   void _timestamp() async {
     setState(() {
       _iStatusCode = 0;
+      _dumpTSA = "";
+      _dumpTST = "";
       _errorMessage = "";
     });
 
@@ -67,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
           certReq: true);
 
       tsq.write("file.digicert.tsq");
-
+      tsq.hexaPrint();
       // tsq.hexaPrint();,
 
       // tsq.write("test.tsq");
@@ -88,11 +94,20 @@ class _MyHomePageState extends State<MyHomePage> {
       if (_iStatusCode == 200) {
         _errorMessage = "good";
         TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
-
-        // ASN1Sequence tsr.asn1sequence contains the parsed responses
-
         tsr.write("file.digicert.tsr");
 
+        // ASN1Sequence tsr.asn1sequence contains the parsed response
+        _dumpTSA = TSACommon.explore(tsr.asn1sequence, 0);
+
+        // TimeStampToken ?
+        if (kDebugMode) {
+          print(tsr.asn1SequenceTSTInfo);
+          if (tsr.asn1SequenceTSTInfo != null) {
+            _dumpTST = TSACommon.explore(tsr.asn1SequenceTSTInfo!, 0);
+          }
+        }
+
+        setState(() {});
         /* 
         openssl ts -reply -in test.tsr -text provides
         
@@ -129,17 +144,34 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'push button for timestamp',
-            ),
-            if (_iStatusCode != 0)
-              Text("status code from tsa server = $_iStatusCode"),
-            if (_errorMessage != "") Text(_errorMessage!)
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              const Row(mainAxisSize: MainAxisSize.max, children: [
+                Text(
+                  "press button, choose a file and wait for digicert timestamp",
+                )
+              ]),
+              if (_iStatusCode != 0)
+                Row(mainAxisSize: MainAxisSize.max, children: [
+                  Text("status code from tsa server = $_iStatusCode")
+                ]),
+              if (_errorMessage != "")
+                Row(mainAxisSize: MainAxisSize.max, children: [
+                  Text(_errorMessage!),
+                ]),
+              const SizedBox(height: 50),
+              if (_dumpTST != "")
+                Container(
+                    color: Colors.green, child: SelectableText(_dumpTST!)),
+              const SizedBox(height: 50),
+              if (_dumpTSA != "") SelectableText(_dumpTSA!)
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
