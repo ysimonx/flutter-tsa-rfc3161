@@ -135,10 +135,11 @@ Nowadays, you can parse the http response and present your data like this
 
 TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
 String result = explore(asn1sequenceproto, 0);
-result contains 
-2024-09-10 12:53:47.000Z as the timestamp
-0x5519275DFC193E5D3B11154FF6F2E8EB as the SerialNumber
-...
+result contains important data like
+"2024-09-10 12:53:47.000Z" as the timestamp
+"0x5519275DFC193E5D3B11154FF6F2E8EB" as the SerialNumber
+
+details : 
 
 ASN1Sequence
     ASN1Sequence
