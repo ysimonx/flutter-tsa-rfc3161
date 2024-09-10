@@ -50,7 +50,7 @@ curl -H 'Content-Type: application/timestamp-query' --data-binary '@file.digicer
 
 file.digicert.tsr can be read with this following openssl cli command
 ```
-        $ openssl ts -reply -in file.digicert.tsr -text provides
+        $ openssl ts -reply -in file.digicert.tsr -text 
         
         Version: 1
         Policy OID: 2.16.840.1.114412.7.1
