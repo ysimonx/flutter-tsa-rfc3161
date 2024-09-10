@@ -1,5 +1,12 @@
 # Changelog
 
+### 1.0.4
+
+- Better http response parsing
+- SHA1 SHA384 SHA256 SHA512 hash algorithms
+- improve doc
+
+
 ### 1.0.3
 
 - Attempt to parse http response
