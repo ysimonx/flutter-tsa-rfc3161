@@ -66,6 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
           nonce: nonceValue,
           certReq: true);
 
+      tsq.write("file.digicert.tsq");
+
       // tsq.hexaPrint();,
 
       // tsq.write("test.tsq");
