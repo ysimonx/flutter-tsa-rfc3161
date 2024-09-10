@@ -32,7 +32,7 @@ class TSACommon {
       Uint8List data = obj.contentBytes();
 
       String hex = data.map((e) => e.toRadixString(16).padLeft(2, '0')).join();
-      return "ASN1Integer : ${obj.valueAsBigInteger}} : 0x${hex.toUpperCase()} }";
+      return "ASN1Integer : ${obj.valueAsBigInteger} : 0x${hex.toUpperCase()} ";
     }
 
     if (obj is ASN1ObjectIdentifier) {

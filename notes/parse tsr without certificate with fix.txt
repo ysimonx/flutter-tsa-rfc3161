@@ -1,10 +1,10 @@
 ASN1Sequence
     ASN1Sequence
-        ASN1Integer : 0} : 0x00 }
+        ASN1Integer : 0 : 0x00 
     ASN1Sequence
         ASN1ObjectIdentifier : 1.2.840.113549.1.7.2 - signedData
         ASN1Sequence
-            ASN1Integer : 3} : 0x03 }
+            ASN1Integer : 3 : 0x03 
             ASN1Set
                 ASN1Sequence
                     ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
@@ -12,19 +12,19 @@ ASN1Sequence
             ASN1Sequence
                 ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
                 ASN1Sequence
-                    ASN1Integer : 1} : 0x01 }
+                    ASN1Integer : 1 : 0x01 
                     ASN1ObjectIdentifier : 2.16.840.1.114412.7.1 - time-stamping
                     ASN1Sequence
                         ASN1Sequence
                             ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
                             ASN1Null
                         ASN1OctetString  : length 34 '[0x4, 0x20, 0x67, 0xc5, 0x7f, 0x0, 0x4e, 0x78, 0x ...
-                    ASN1Integer : 316287570849238471829783299505349511804} : 0x00EDF2C537345E3800A0D024033E4CCA7C }
+                    ASN1Integer : 316287570849238471829783299505349511804 : 0x00EDF2C537345E3800A0D024033E4CCA7C 
                     ASN1GeneralizedTime : 2024-09-10 12:52:03.000Z
-                    ASN1Integer : 1725972723316} : 0x0191DBFDB674 }
+                    ASN1Integer : 1725972723316 : 0x0191DBFDB674 
             ASN1Set
                 ASN1Sequence
-                    ASN1Integer : 1} : 0x01 }
+                    ASN1Integer : 1 : 0x01 
                     ASN1Sequence
                         ASN1Sequence
                             ASN1Set
@@ -39,7 +39,7 @@ ASN1Sequence
                                 ASN1Sequence
                                     ASN1ObjectIdentifier : 2.5.4.3 - commonName
                                     ASN1PrintableString : DigiCert Trusted G4 RSA4096 SHA256 TimeStamping CA
-                        ASN1Integer : 7002784885422699301467740558332354838} : 0x0544AFF3949D0839A6BFDB3F5FE56116 }
+                        ASN1Integer : 7002784885422699301467740558332354838 : 0x0544AFF3949D0839A6BFDB3F5FE56116 
                     ASN1Sequence
                         ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
                         ASN1Null

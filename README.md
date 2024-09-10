@@ -138,16 +138,17 @@ String result = explore(asn1sequenceproto, 0);
 result contains important data like
 "2024-09-10 12:53:47.000Z" as the timestamp
 "0x5519275DFC193E5D3B11154FF6F2E8EB" as the SerialNumber
+"1725972827265" as the Nonce value
 
 details : 
 
 ASN1Sequence
     ASN1Sequence
-        ASN1Integer : 0} : 0x00 }
+        ASN1Integer : 0 : 0x00 
     ASN1Sequence
         ASN1ObjectIdentifier : 1.2.840.113549.1.7.2 - signedData
         ASN1Sequence
-            ASN1Integer : 3} : 0x03 }
+            ASN1Integer : 3 : 0x03 
             ASN1Set
                 ASN1Sequence
                     ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
@@ -155,16 +156,16 @@ ASN1Sequence
             ASN1Sequence
                 ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
                 ASN1Sequence
-                    ASN1Integer : 1} : 0x01 }
+                    ASN1Integer : 1 : 0x01 
                     ASN1ObjectIdentifier : 2.16.840.1.114412.7.1 - time-stamping
                     ASN1Sequence
                         ASN1Sequence
                             ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
                             ASN1Null
                         ASN1OctetString  : length 34 '[0x4, 0x20, 0x67, 0xc5, 0x7f, 0x0, 0x4e, 0x78, 0x ...
-                    ASN1Integer : 113114985523395616256261459051482900715} : 0x5519275DFC193E5D3B11154FF6F2E8EB }
+                    ASN1Integer : 113114985523395616256261459051482900715 : 0x5519275DFC193E5D3B11154FF6F2E8EB 
                     ASN1GeneralizedTime : 2024-09-10 12:53:47.000Z
-                    ASN1Integer : 1725972827265} : 0x0191DBFF4C81 }
+                    ASN1Integer : 1725972827265 : 0x0191DBFF4C81 
             ASN1Sequence
                 ASN1Sequence
                     ASN1Sequence
@@ -242,7 +243,7 @@ ASN1Sequence
                 ASN1Sequence
                     ASN1Sequence
                         ASN1Object : length 5 ''
-                        ASN1Integer : 9586110043380832440035821245782711899} : 0x073637B724547CD847ACFD28662A5E5B }
+                        ASN1Integer : 9586110043380832440035821245782711899 : 0x073637B724547CD847ACFD28662A5E5B 
                         ASN1Sequence
                             ASN1ObjectIdentifier : 1.2.840.113549.1.1.11 - sha256WithRSAEncryption
                             ASN1Null
@@ -318,7 +319,7 @@ ASN1Sequence
                 ASN1Sequence
                     ASN1Sequence
                         ASN1Object : length 5 ''
-                        ASN1Integer : 19414496059604725969669510860671817818} : 0x0E9B188EF9D02DE7EFDB50E20840185A }
+                        ASN1Integer : 19414496059604725969669510860671817818 : 0x0E9B188EF9D02DE7EFDB50E20840185A 
                         ASN1Sequence
                             ASN1ObjectIdentifier : 1.2.840.113549.1.1.12 - sha384WithRSAEncryption
                             ASN1Null
@@ -394,7 +395,7 @@ ASN1Sequence
                     ASN1BitString : [112, 160, 191, 67, 92, 85, 231, 56, 95, 160, 163, 116, 27, 61, 182, 22, 215, 247, 191, 87, 7, 189, 154, 172, 161, 135, 44, 236, 133, 94, 169, 26, 187, 34, 248, 135, 26, 105, 84, 34, 237, 164, 136, 119, 109, 189, 26, 20, 244, 19, 74, 122, 47, 45, 183, 56, 239, 244, 255, 128, 185, 248, 161, 247, 242, 114, 222, 36, 188, 82, 3, 200, 78, 208, 42, 222, 250, 45, 86, 207, 249, 244, 247, 172, 48, 122, 154, 139, 178, 94, 212, 207, 209, 67, 68, 155, 67, 33, 235, 150, 114, 161, 72, 180, 153, 203, 157, 79, 167, 6, 3, 19, 119, 39, 68, 212, 231, 127, 232, 89, 168, 240, 191, 47, 11, 166, 233, 242, 52, 60, 236, 247, 3, 199, 135, 168, 210, 76, 64, 25, 53, 70, 106, 105, 84, 176, 184, 161, 86, 142, 236, 164, 213, 61, 232, 177, 220, 253, 28, 216, 244, 119, 90, 92, 84, 140, 111, 239, 161, 80, 61, 252, 118, 9, 104, 132, 159, 111, 202, 219, 32, 141, 53, 96, 28, 2, 3, 203, 32, 176, 172, 88, 160, 14, 64, 99, 197, 152, 34, 193, 178, 89, 245, 85, 107, 207, 39, 171, 108, 118, 206, 111, 35, 45, 244, 126, 113, 106, 35, 107, 34, 255, 18, 184, 84, 45, 39, 126, 216, 58, 217, 240, 182, 135, 150, 253, 91, 209, 92, 172, 24, 195, 77, 159, 115, 183, 1, 169, 159, 87, 170, 94, 40, 226, 185, 148]
             ASN1Set
                 ASN1Sequence
-                    ASN1Integer : 1} : 0x01 }
+                    ASN1Integer : 1 : 0x01 
                     ASN1Sequence
                         ASN1Sequence
                             ASN1Set
@@ -409,7 +410,7 @@ ASN1Sequence
                                 ASN1Sequence
                                     ASN1ObjectIdentifier : 2.5.4.3 - commonName
                                     ASN1PrintableString : DigiCert Trusted G4 RSA4096 SHA256 TimeStamping CA
-                        ASN1Integer : 7002784885422699301467740558332354838} : 0x0544AFF3949D0839A6BFDB3F5FE56116 }
+                        ASN1Integer : 7002784885422699301467740558332354838 : 0x0544AFF3949D0839A6BFDB3F5FE56116 
                     ASN1Sequence
                         ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
                         ASN1Null
