@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.0.7
+
+- Better Integer Analysis (for SerialNumber)
+- improve README.md
+
+
 ### 1.0.6
 
 - Better http response parsing

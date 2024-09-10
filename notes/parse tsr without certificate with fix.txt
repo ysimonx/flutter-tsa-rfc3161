@@ -1,10 +1,10 @@
 ASN1Sequence
     ASN1Sequence
-        ASN1Integer : 0 : 0 0
+        ASN1Integer : 0} : 0x00 }
     ASN1Sequence
         ASN1ObjectIdentifier : 1.2.840.113549.1.7.2 - signedData
         ASN1Sequence
-            ASN1Integer : 3 : 3 3
+            ASN1Integer : 3} : 0x03 }
             ASN1Set
                 ASN1Sequence
                     ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
@@ -12,19 +12,19 @@ ASN1Sequence
             ASN1Sequence
                 ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
                 ASN1Sequence
-                    ASN1Integer : 1 : 1 1
+                    ASN1Integer : 1} : 0x01 }
                     ASN1ObjectIdentifier : 2.16.840.1.114412.7.1 - time-stamping
                     ASN1Sequence
                         ASN1Sequence
                             ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
                             ASN1Null
-                        ASN1OctetString  : length 34 '[0x4, 0x20, 0x67, 0x30, 0x96, 0xd, 0x55, 0xd1, 0x ...
-                    ASN1Integer : 9223372036854775807 : 312481726502259293150728430540291173514 eb15ca9a2336810f37c043e7c251ec8a
-                    ASN1GeneralizedTime : 2024-09-10 06:54:18.000Z
-                    ASN1Integer : 1725951258415 : 1725951258415 191dab62f2f
+                        ASN1OctetString  : length 34 '[0x4, 0x20, 0x67, 0xc5, 0x7f, 0x0, 0x4e, 0x78, 0x ...
+                    ASN1Integer : 316287570849238471829783299505349511804} : 0x00EDF2C537345E3800A0D024033E4CCA7C }
+                    ASN1GeneralizedTime : 2024-09-10 12:52:03.000Z
+                    ASN1Integer : 1725972723316} : 0x0191DBFDB674 }
             ASN1Set
                 ASN1Sequence
-                    ASN1Integer : 1 : 1 1
+                    ASN1Integer : 1} : 0x01 }
                     ASN1Sequence
                         ASN1Sequence
                             ASN1Set
@@ -39,7 +39,7 @@ ASN1Sequence
                                 ASN1Sequence
                                     ASN1ObjectIdentifier : 2.5.4.3 - commonName
                                     ASN1PrintableString : DigiCert Trusted G4 RSA4096 SHA256 TimeStamping CA
-                        ASN1Integer : 9223372036854775807 : 7002784885422699301467740558332354838 544aff3949d0839a6bfdb3f5fe56116
+                        ASN1Integer : 7002784885422699301467740558332354838} : 0x0544AFF3949D0839A6BFDB3F5FE56116 }
                     ASN1Sequence
                         ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
                         ASN1Null
@@ -51,7 +51,7 @@ ASN1Sequence
                         ASN1Sequence
                             ASN1ObjectIdentifier : 1.2.840.113549.1.9.5 - signing-time
                             ASN1Set
-                                ASN1UtcTime : 2024-09-10 06:54:18.000Z
+                                ASN1UtcTime : 2024-09-10 12:52:03.000Z
                         ASN1Sequence
                             ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.2.12 - signing-certificate
                             ASN1Set
@@ -62,7 +62,7 @@ ASN1Sequence
                         ASN1Sequence
                             ASN1ObjectIdentifier : 1.2.840.113549.1.9.4 - id-messageDigest
                             ASN1Set
-                                ASN1OctetString  : length 34 '[0x4, 0x20, 0xbe, 0x4d, 0x52, 0xd0, 0x4, 0xff, 0x ...
+                                ASN1OctetString  : length 34 '[0x4, 0x20, 0x1e, 0x91, 0xa1, 0x3a, 0x73, 0x12, 0 ...
                         ASN1Sequence
                             ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.2.47 - id-aa-signingCertificateV2
                             ASN1Set
@@ -73,4 +73,4 @@ ASN1Sequence
                     ASN1Sequence
                         ASN1ObjectIdentifier : 1.2.840.113549.1.1.1 - rsaEncryption
                         ASN1Null
-                    ASN1OctetString  : length 516 '[0x4, 0x82, 0x2, 0x0, 0x47, 0x9e, 0x8e, 0xce, 0x4 ...
+                    ASN1OctetString  : length 516 '[0x4, 0x82, 0x2, 0x0, 0x12, 0x2f, 0xe2, 0x8, 0x4b ...

@@ -19,7 +19,7 @@ class TSACommon {
     debugPrint(hex2);
   }
 
-  String tagName(ASN1Object obj) {
+  String formatTag(ASN1Object obj) {
     if (obj is ASN1Sequence) {
       return "ASN1Sequence";
     }
@@ -29,7 +29,10 @@ class TSACommon {
     }
 
     if (obj is ASN1Integer) {
-      return "ASN1Integer : ${obj.intValue} : ${obj.valueAsBigInteger} ${obj.valueAsBigInteger.toRadixString(16)}";
+      Uint8List data = obj.contentBytes();
+
+      String hex = data.map((e) => e.toRadixString(16).padLeft(2, '0')).join();
+      return "ASN1Integer : ${obj.valueAsBigInteger}} : 0x${hex.toUpperCase()} }";
     }
 
     if (obj is ASN1ObjectIdentifier) {
@@ -82,7 +85,7 @@ class TSACommon {
   String explore(ASN1Object obj, int? level) {
     level ??= 0;
 
-    String s = "${ident(level)}${tagName(obj)}\n";
+    String s = "${ident(level)}${formatTag(obj)}\n";
     if (obj is ASN1Sequence) {
       for (var i = 0; i < obj.elements.length; i++) {
         s = "$s${explore(obj.elements[i], level + 1)}";
@@ -145,6 +148,21 @@ class TSACommon {
 
     return obj;
   }
+
+  /*
+
+  sometimes, tag can be 160 or 163 
+
+  "160, 130, 23, 100 .... "
+
+  "160, 129, 146, 4, 129, 143 ..."
+
+  it is a "context specific" tag, not parsed by asnlib1,
+  but it is also a "structured" data ... so, let's try
+  to constructed a SEQ with the content bytes, a quick and dirty
+  solution ;-)
+
+  */
 
   ASN1Object fix(ASN1Object obj) {
     ASN1Object result = obj;
