@@ -1,69 +1,76 @@
+ASN1Sequence
     ASN1Sequence
+        ASN1Integer : 0 : 0 0
+    ASN1Sequence
+        ASN1ObjectIdentifier : 1.2.840.113549.1.7.2 - signedData
         ASN1Sequence
-            ASN1Integer : 0 : 0 0
-        ASN1Sequence
-            ASN1ObjectIdentifier : 1.2.840.113549.1.7.2 - signedData
-            ASN1Sequence
-                ASN1Integer : 3 : 3 3
-                ASN1Set
-                    ASN1Sequence
-                        ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
-                        ASN1Null
+            ASN1Integer : 3 : 3 3
+            ASN1Set
                 ASN1Sequence
-                    ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
+                    ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
+                    ASN1Null
+            ASN1Sequence
+                ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
+                ASN1Sequence
+                    ASN1Integer : 1 : 1 1
+                    ASN1ObjectIdentifier : 2.16.840.1.114412.7.1 - time-stamping
                     ASN1Sequence
-                        ASN1Integer : 1 : 1 1
-                        ASN1ObjectIdentifier : 2.16.840.1.114412.7.1 - time-stamping
-                        ASN1Sequence
-                            ASN1Sequence
-                                ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
-                                ASN1Null
-                            ASN1OctetString  : length 34
-                        ASN1Integer : 9223372036854775807 : 332473856939574195297074411283243350031 fa2022bbf678ac8799209286b5e4380f
-                        ASN1GeneralizedTime : 2024-09-09 14:30:46.000Z
-                        ASN1Integer : 1725892246397 : 1725892246397 191d731bb7d
-                ASN1Set
-                    ASN1Sequence
-                        ASN1Integer : 1 : 1 1
-                        ASN1Sequence
-                            ASN1Sequence
-                                ASN1Set
-                                    ASN1Sequence
-                                        ASN1ObjectIdentifier : 2.5.4.6 - countryName
-                                        ASN1PrintableString : US
-                                ASN1Set
-                                    ASN1Sequence
-                                        ASN1ObjectIdentifier : 2.5.4.10 - organizationName
-                                        ASN1PrintableString : DigiCert, Inc.
-                                ASN1Set
-                                    ASN1Sequence
-                                        ASN1ObjectIdentifier : 2.5.4.3 - commonName
-                                        ASN1PrintableString : DigiCert Trusted G4 RSA4096 SHA256 TimeStamping CA
-                            ASN1Integer : 9223372036854775807 : 7002784885422699301467740558332354838 544aff3949d0839a6bfdb3f5fe56116
                         ASN1Sequence
                             ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
                             ASN1Null
+                        ASN1OctetString  : length 34 '[0x4, 0x20, 0x67, 0x30, 0x96, 0xd, 0x55, 0xd1, 0x ...
+                    ASN1Integer : 9223372036854775807 : 312481726502259293150728430540291173514 eb15ca9a2336810f37c043e7c251ec8a
+                    ASN1GeneralizedTime : 2024-09-10 06:54:18.000Z
+                    ASN1Integer : 1725951258415 : 1725951258415 191dab62f2f
+            ASN1Set
+                ASN1Sequence
+                    ASN1Integer : 1 : 1 1
+                    ASN1Sequence
                         ASN1Sequence
-                            ASN1Sequence
-                                ASN1ObjectIdentifier : 1.2.840.113549.1.9.3 - contentType
-                                ASN1Set
-                                    ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
-                            ASN1Sequence
-                                ASN1ObjectIdentifier : 1.2.840.113549.1.9.5 - signing-time
-                                ASN1Set
-                                    ASN1UtcTime : 2024-09-09 14:30:46.000Z
-                            ASN1Sequence
-                                ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.2.12 - signing-certificate
-                                ASN1Set
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.6 - countryName
+                                    ASN1PrintableString : US
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.10 - organizationName
+                                    ASN1PrintableString : DigiCert, Inc.
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.3 - commonName
+                                    ASN1PrintableString : DigiCert Trusted G4 RSA4096 SHA256 TimeStamping CA
+                        ASN1Integer : 9223372036854775807 : 7002784885422699301467740558332354838 544aff3949d0839a6bfdb3f5fe56116
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
+                        ASN1Null
+                    ASN1Sequence
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.3 - contentType
+                            ASN1Set
+                                ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.5 - signing-time
+                            ASN1Set
+                                ASN1UtcTime : 2024-09-10 06:54:18.000Z
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.2.12 - signing-certificate
+                            ASN1Set
+                                ASN1Sequence
                                     ASN1Sequence
                                         ASN1Sequence
-                                            ASN1Sequence
-                                                ASN1OctetString  : length 22
-                            ASN1Sequence
-                                ASN1ObjectIdentifier : 1.2.840.113549.1.9.4 - id-messageDigest
-                                ASN1Set
-                                    ASN1OctetString  : length 34
+                                            ASN1OctetString  : length 22 '[0x4, 0x14, 0x66, 0xf0, 0x2b, 0x32, 0xc2, 0xc2, 0 ...
                         ASN1Sequence
-                            ASN1ObjectIdentifier : 1.2.840.113549.1.1.1 - rsaEncryption
-                            ASN1Null
-                        ASN1OctetString  : length 516
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.4 - id-messageDigest
+                            ASN1Set
+                                ASN1OctetString  : length 34 '[0x4, 0x20, 0xbe, 0x4d, 0x52, 0xd0, 0x4, 0xff, 0x ...
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.2.47 - id-aa-signingCertificateV2
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1Sequence
+                                        ASN1Sequence
+                                            ASN1OctetString  : length 34 '[0x4, 0x20, 0xd2, 0xf6, 0xe4, 0x6d, 0xed, 0x74, 0 ...
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 1.2.840.113549.1.1.1 - rsaEncryption
+                        ASN1Null
+                    ASN1OctetString  : length 516 '[0x4, 0x82, 0x2, 0x0, 0x47, 0x9e, 0x8e, 0xce, 0x4 ...

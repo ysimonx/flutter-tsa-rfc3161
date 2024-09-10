@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
           filepath: file.path,
           algorithm: TSAHashAlgo.sha256,
           nonce: nonceValue,
-          certReq: false);
+          certReq: true);
 
       // tsq.hexaPrint();
       // tsq.write("test.tsq");

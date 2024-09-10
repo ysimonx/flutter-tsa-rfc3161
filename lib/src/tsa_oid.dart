@@ -27,7 +27,9 @@ class TSAOid {
       "1.2.840.113549.1.9.5": "signing-time",
       "1.2.840.113549.1.9.16.2.12": "signing-certificate",
       "1.2.840.113549.1.9.4": "id-messageDigest",
-      "2.5.4.11": "organizationalUnitName"
+      "2.5.4.11": "organizationalUnitName",
+      "1.2.840.113549.1.9.16.2.47": "id-aa-signingCertificateV2",
+      "1.2.840.113549.1.1.12": "sha384WithRSAEncryption"
     };
 
     if (oids.containsKey(oid)) {

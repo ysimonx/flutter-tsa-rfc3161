@@ -42,7 +42,11 @@ class TSACommon {
     }
 
     if (obj is ASN1OctetString) {
-      return "ASN1OctetString  : length ${obj.totalEncodedByteLength}";
+      String hexa = "'${obj.toHexString()}'";
+      if (hexa.length > 80) {
+        hexa = "${hexa.substring(0, 50)} ...";
+      }
+      return "ASN1OctetString  : length ${obj.totalEncodedByteLength} $hexa";
     }
     if (obj is ASN1Null) {
       return "ASN1Null";
@@ -123,16 +127,12 @@ class TSACommon {
       Uint8List content = obj.encodedBytes.sublist(offset);
 
       List<ASN1Object> elements = [];
-      int position = 0;
-      int remaining = content.length;
 
-      while (remaining > 0) {
-        Uint8List content = obj.encodedBytes.sublist(offset + position);
-        ASN1Parser parser = ASN1Parser(content, relaxedParsing: true);
+      ASN1Parser parser = ASN1Parser(content, relaxedParsing: true);
+
+      while (parser.hasNext()) {
         ASN1Object result = parser.nextObject();
         elements.add(result);
-        position = position + result.totalEncodedByteLength;
-        remaining = remaining - position;
       }
 
       if (elements.length == 1) {
@@ -146,8 +146,8 @@ class TSACommon {
     return obj;
   }
 
-  ASN1Object fix(ASN1Object asn1sequenceproto) {
-    ASN1Object result = asn1sequenceproto;
+  ASN1Object fix(ASN1Object obj) {
+    ASN1Object result = obj;
     if (result is ASN1Sequence) {
       for (var i = 0; i < result.elements.length; i++) {
         ASN1Object element = result.elements.elementAt(i);
