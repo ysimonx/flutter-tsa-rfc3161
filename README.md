@@ -81,7 +81,7 @@ In addition to "file.txt",
 you can provide the file "file.digicert.tsr" at anyone who need to be sure that file.txt has not been created or modifier after "Sep  7 08:37:47 2024 GMT"
 
 
-Any one with both "file.txt" and "file.digicert.tsr" can verify the timestamp provided by digicert 
+Anyone with both "file.txt" and "file.digicert.tsr" can verify the timestamp provided by digicert 
 
 ```
 
