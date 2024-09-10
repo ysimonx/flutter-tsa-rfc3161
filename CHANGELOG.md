@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.0.10
+
+- extract TimeStampToken TST and displays it
+
+
+
 ### 1.0.9
 
 - Better Integer Analysis (for SerialNumber)

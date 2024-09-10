@@ -36,10 +36,11 @@ class TSAResponse extends TSACommon {
     }
   }
 
+  // trying to build a map OID => sequence that contains the OID
+
   Map<String, ASN1Sequence> buildMapOidSeq(
       ASN1Object obj, Map<String, ASN1Sequence> mapOidSeq) {
     ASN1ObjectIdentifier? asn1oid;
-    ASN1Sequence? asn1seq;
 
     Map<String, ASN1Sequence> compl = {};
 
@@ -50,13 +51,12 @@ class TSAResponse extends TSACommon {
           asn1oid = item;
         }
         if (item is ASN1Sequence) {
-          asn1seq = item;
-          compl = buildMapOidSeq(asn1seq, mapOidSeq);
+          compl = buildMapOidSeq(item, mapOidSeq);
         }
       }
-      if (asn1oid != null && asn1seq != null) {
+      if (asn1oid != null) {
         if (asn1oid.identifier != null) {
-          mapOidSeq[asn1oid.identifier!] = asn1seq;
+          mapOidSeq[asn1oid.identifier!] = obj;
         }
       }
     }
