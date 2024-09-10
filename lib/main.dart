@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       TSARequest tsq = TSARequest.fromFile(
           filepath: file.path,
-          algorithm: TSAHashAlgo.sha1,
+          algorithm: TSAHashAlgo.sha256,
           nonce: nonceValue,
           certReq: true);
 
@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (_iStatusCode == 200) {
         _errorMessage = "good";
         TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
-        tsr.write("test.tsr");
+        tsr.write("file.digicert.tsr");
         /* 
         openssl ts -reply -in test.tsr -text provides
         

@@ -25,6 +25,7 @@ import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 
       if (response.statusCode == 200) {
         TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
+        tsr.write("file.digicert.tsr");
       }
     
 ```
@@ -53,6 +54,9 @@ In addition to "file.txt",
 you can provide the file "file.digicert.tsr" at anyone who need to be sure that file.txt has not been created or modifier after "Sep  7 08:37:47 2024 GMT"
 
 ```
+
+# download certificates from digicert's servers
+
 wget https://cacerts.digicert.com/DigiCertAssuredIDRootCA.crt.pem
 wget https://knowledge.digicert.com/content/dam/digicertknowledgebase/attachments/time-stamp/TSACertificate.cer
 wget https://knowledge.digicert.com/content/dam/digicertknowledgebase/DigiCertTrustedG4RSA4096SHA256TimeStampingCA.cer
@@ -61,14 +65,16 @@ wget https://knowledge.digicert.com/content/dam/digicertknowledgebase/DigiCertTr
 cat TSACertificate.cer > CHAIN.pem 
 cat DigiCertTrustedG4RSA4096SHA256TimeStampingCA.cer >> CHAIN.pem
 cat DigiCertTrustedRootG4.cer >> CHAIN.pem
-echo
-echo
-echo "verifying previous response with digicert's public certificates"
-sleep 5
-echo
 
-# verification avec le fichier initial "file.txt"
-openssl ts -verify -data file.txt -in file.digicert.tsr -CAfile DigiCertAssuredIDRootCA.crt.pem -untrusted CHAIN.pem
+# "file.digicert.tsr" has been created with this flutter lib from "file.txt"
+# let's verify that the timestamp proof is good
+#
+
+$ openssl ts -verify -data file.txt -in file.digicert.tsr -CAfile DigiCertAssuredIDRootCA.crt.pem -untrusted CHAIN.pem
+
+Verification: OK
+
+
 ```
 
 
