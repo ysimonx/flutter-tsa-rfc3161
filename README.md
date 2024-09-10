@@ -52,6 +52,26 @@ file.digicert.tsr contains the
 In addition to "file.txt", 
 you can provide the file "file.digicert.tsr" at anyone who need to be sure that file.txt has not been created or modifier after "Sep  7 08:37:47 2024 GMT"
 
+```
+wget https://cacerts.digicert.com/DigiCertAssuredIDRootCA.crt.pem
+wget https://knowledge.digicert.com/content/dam/digicertknowledgebase/attachments/time-stamp/TSACertificate.cer
+wget https://knowledge.digicert.com/content/dam/digicertknowledgebase/DigiCertTrustedG4RSA4096SHA256TimeStampingCA.cer
+wget https://knowledge.digicert.com/content/dam/digicertknowledgebase/DigiCertTrustedRootG4.cer
+
+cat TSACertificate.cer > CHAIN.pem 
+cat DigiCertTrustedG4RSA4096SHA256TimeStampingCA.cer >> CHAIN.pem
+cat DigiCertTrustedRootG4.cer >> CHAIN.pem
+echo
+echo
+echo "verifying previous response with digicert's public certificates"
+sleep 5
+echo
+
+# verification avec le fichier initial "file.txt"
+openssl ts -verify -data file.txt -in file.digicert.tsr -CAfile DigiCertAssuredIDRootCA.crt.pem -untrusted CHAIN.pem
+```
+
+
 ## Note 3 
 
 authentication is available
