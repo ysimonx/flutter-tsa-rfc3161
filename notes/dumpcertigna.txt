@@ -1,0 +1,328 @@
+TST 
+
+  ASN1Sequence
+        ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
+        ASN1Sequence
+            ASN1Integer : 1 : 0x01 
+            ASN1ObjectIdentifier : 1.2.250.1.177.2.9.1 - tsa_policy_certigna
+            ASN1Sequence
+                ASN1Sequence
+                    ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
+                    ASN1Null
+                ASN1OctetString  : length 34 '[0x4, 0x20, 0xa1, 0x76, 0x94, 0x3b, 0xd4, 0x98, 0 ...
+            ASN1Integer : 333290105943297421474124402258673880077 : 0x00FABD56EACF68403086C7C47FA2CB4C0D 
+            ASN1GeneralizedTime : 2024-09-11 06:51:22.000Z
+            ASN1Sequence
+                ASN1Integer : 1 : 0x01 
+            ASN1Integer : 1726037482833 : 0x0191DFD9DD51 
+            ASN1Sequence
+                ASN1Set
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 2.5.4.6 - countryName
+                        ASN1PrintableString : FR
+                ASN1Set
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 2.5.4.10 - organizationName
+                        ASN1Object : length 11 'DHIMYOTIS'
+                ASN1Set
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 2.5.4.97 - organizationIdentifier
+                        ASN1Object : length 22 'NTRFR-48146308100036'
+                ASN1Set
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 2.5.4.11 - organizationalUnitName
+                        ASN1Object : length 21 '0002 48146308100036'
+                ASN1Set
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 2.5.4.3 - commonName
+                        ASN1Object : length 19 'DHIMYOTIS - TSU19'
+                ASN1Set
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 2.5.4.5 - serialNumber
+                        ASN1PrintableString : T307221024
+            ASN1Object : length 29 
+
+
+full dump
+
+
+ASN1Sequence
+    ASN1Sequence
+        ASN1Integer : 0 : 0x00 
+    ASN1Sequence
+        ASN1ObjectIdentifier : 1.2.840.113549.1.7.2 - signedData
+        ASN1Sequence
+            ASN1Integer : 3 : 0x03 
+            ASN1Set
+                ASN1Sequence
+                    ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
+            ASN1Sequence
+                ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
+                ASN1Sequence
+                    ASN1Integer : 1 : 0x01 
+                    ASN1ObjectIdentifier : 1.2.250.1.177.2.9.1 - tsa_policy_certigna
+                    ASN1Sequence
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
+                            ASN1Null
+                        ASN1OctetString  : length 34 '[0x4, 0x20, 0xa1, 0x76, 0x94, 0x3b, 0xd4, 0x98, 0 ...
+                    ASN1Integer : 333290105943297421474124402258673880077 : 0x00FABD56EACF68403086C7C47FA2CB4C0D 
+                    ASN1GeneralizedTime : 2024-09-11 06:51:22.000Z
+                    ASN1Sequence
+                        ASN1Integer : 1 : 0x01 
+                    ASN1Integer : 1726037482833 : 0x0191DFD9DD51 
+                    ASN1Sequence
+                        ASN1Set
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.4.6 - countryName
+                                ASN1PrintableString : FR
+                        ASN1Set
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.4.10 - organizationName
+                                ASN1Object : length 11 'DHIMYOTIS'
+                        ASN1Set
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.4.97 - organizationIdentifier
+                                ASN1Object : length 22 'NTRFR-48146308100036'
+                        ASN1Set
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.4.11 - organizationalUnitName
+                                ASN1Object : length 21 '0002 48146308100036'
+                        ASN1Set
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.4.3 - commonName
+                                ASN1Object : length 19 'DHIMYOTIS - TSU19'
+                        ASN1Set
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.4.5 - serialNumber
+                                ASN1PrintableString : T307221024
+                    ASN1Object : length 29 
+            ASN1Sequence
+                ASN1Sequence
+                    ASN1Sequence
+                        ASN1Object : length 5 ''
+                        ASN1Integer : 198429372998709978411380447595286256357 : 0x0095481B6CE6322142FE8499830E7C5AE5 
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.1.11 - sha256WithRSAEncryption
+                            ASN1Null
+                        ASN1Sequence
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.6 - countryName
+                                    ASN1PrintableString : FR
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.10 - organizationName
+                                    ASN1Object : length 11 'Dhimyotis'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.11 - organizationalUnitName
+                                    ASN1Object : length 21 '0002 48146308100036'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.3 - commonName
+                                    ASN1Object : length 18 'Certigna Root CA'
+                        ASN1Sequence
+                            ASN1UtcTime : 2015-11-25 10:27:54.000Z
+                            ASN1UtcTime : 2033-06-03 10:27:54.000Z
+                        ASN1Sequence
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.6 - countryName
+                                    ASN1PrintableString : FR
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.10 - organizationName
+                                    ASN1Object : length 11 'DHIMYOTIS'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.11 - organizationalUnitName
+                                    ASN1Object : length 21 '0002 48146308100036'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.97 - organizationIdentifier
+                                    ASN1Object : length 22 'NTRFR-48146308100036'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.3 - commonName
+                                    ASN1Object : length 20 'Certigna Entity CA'
+                        ASN1Sequence
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 1.2.840.113549.1.1.1 - rsaEncryption
+                                ASN1Null
+                            ASN1BitString : [48, 130, 2, 10, 2, 130, 2, 1, 0, 210, 84, 235, 3, 6, 26, 56, 154, 111, 109, 228, 143, 118, 63, 37, 224, 53, 84, 8, 253, 173, 119, 150, 105, 39, 166, 1, 17, 57, 35, 208, 49, 50, 106, 42, 230, 206, 31, 144, 118, 138, 137, 186, 193, 52, 108, 251, 187, 13, 232, 175, 25, 130, 218, 33, 246, 79, 231, 119, 213, 139, 227, 140, 243, 244, 223, 137, 2, 186, 212, 30, 119, 146, 12, 8, 214, 210, 245, 156, 72, 93, 45, 222, 198, 240, 110, 210, 172, 171, 52, 28, 100, 168, 126, 78, 138, 49, 106, 167, 226, 221, 164, 86, 73, 47, 162, 219, 135, 229, 28, 241, 91, 244, 235, 99, 33, 125, 145, 74, 193, 190, 167, 0, 169, 72, 160, 164, 251, 77, 191, 108, 58, 37, 25, 132, 55, 116, 41, 97, 128, 227, 27, 128, 112, 207, 130, 119, 68, 196, 76, 182, 174, 115, 233, 61, 69, 231, 152, 87, 214, 17, 79, 236, 87, 26, 188, 223, 170, 224, 104, 137, 234, 110, 203, 50, 28, 34, 194, 30, 231, 29, 78, 245, 150, 98, 225, 82, 182, 7, 0, 138, 242, 128, 223, 222, 66, 134, 194, 157, 95, 7, 137, 44, 65, 155, 71, 133, 182, 114, 67, 93, 101, 29, 236, 167, 100, 116, 157, 54, 19, 174, 218, 114, 85, 122, 219, 149, 112, 207, 15, 180, 56, 161, 246, 209, 112, 106, 59, 139, 78, 241, 140, 180, 78, 226, 103, 101, 1, 159, 3, 251, 82, 197, 215, 233, 238, 28, 77, 90, 85, 197, 30, 249, 26, 68, 100, 223, 143, 220, 186, 182, 255, 86, 85, 154, 224, 112, 214, 218, 93, 30, 28, 222, 8, 196, 252, 107, 161, 24, 48, 170, 183, 125, 168, 129, 50, 174, 223, 183, 7, 48, 28, 66, 69, 112, 160, 49, 97, 0, 203, 62, 45, 4, 53, 83, 243, 245, 25, 204, 54, 242, 20, 147, 158, 235, 118, 171, 161, 151, 104, 162, 18, 56, 94, 65, 35, 231, 71, 216, 79, 175, 128, 160, 73, 116, 82, 135, 45, 179, 6, 207, 206, 173, 79, 116, 140, 215, 111, 235, 188, 146, 46, 5, 100, 175, 246, 177, 60, 2, 40, 156, 98, 126, 153, 115, 143, 215, 133, 114, 253, 38, 112, 69, 114, 98, 140, 213, 60, 3, 243, 2, 141, 90, 146, 194, 181, 252, 165, 146, 9, 209, 193, 216, 231, 104, 229, 216, 75, 151, 40, 134, 252, 9, 149, 113, 208, 59, 54, 84, 4, 62, 14, 159, 74, 66, 92, 109, 149, 121, 144, 217, 230, 144, 143, 91, 129, 11, 244, 137, 81, 78, 247, 45, 44, 212, 9, 115, 124, 87, 8, 172, 80, 139, 75, 240, 53, 82, 194, 250, 251, 159, 71, 214, 39, 210, 185, 183, 161, 152, 62, 38, 179, 192, 45, 243, 127, 205, 143, 32, 35, 16, 144, 172, 237, 75, 200, 26, 68, 133, 123, 158, 34, 125, 41, 200, 116, 29, 55, 41, 150, 179, 233, 201, 197, 35, 3, 242, 237, 56, 79, 83, 137, 2, 3, 1, 0, 1]
+                        ASN1Sequence
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.19 - basicConstraints
+                                ASN1Boolean : true
+                                ASN1OctetString  : length 10 '[0x4, 0x8, 0x30, 0x6, 0x1, 0x1, 0xff, 0x2, 0x1, 0x0]'
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.15 - keyUsage
+                                ASN1Boolean : true
+                                ASN1OctetString  : length 6 '[0x4, 0x4, 0x3, 0x2, 0x1, 0x6]'
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.14 - subjectKeyIdentifier
+                                ASN1OctetString  : length 24 '[0x4, 0x16, 0x4, 0x14, 0xa5, 0x3f, 0x1e, 0x24, 0x ...
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.35 - authorityKeyIdentifier
+                                ASN1OctetString  : length 26 '[0x4, 0x18, 0x30, 0x16, 0x80, 0x14, 0x18, 0x87, 0 ...
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.32 - certificatePolicies
+                                ASN1OctetString  : length 68 '[0x4, 0x42, 0x30, 0x40, 0x30, 0x3e, 0x6, 0xa, 0x2 ...
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 1.3.6.1.5.5.7.1.1 - authorityInfoAccess
+                                ASN1OctetString  : length 126 '[0x4, 0x7c, 0x30, 0x7a, 0x30, 0x3a, 0x6, 0x8, 0x2 ...
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.31 - cRLDistributionPoints
+                                ASN1OctetString  : length 104 '[0x4, 0x66, 0x30, 0x64, 0x30, 0x2f, 0xa0, 0x2d, 0 ...
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 1.2.840.113549.1.1.11 - sha256WithRSAEncryption
+                        ASN1Null
+                    ASN1BitString : [173, 245, 137, 37, 68, 163, 219, 80, 238, 32, 254, 234, 211, 109, 71, 82, 70, 21, 233, 213, 199, 212, 83, 125, 176, 70, 142, 15, 157, 121, 232, 145, 213, 236, 206, 5, 170, 76, 174, 108, 40, 224, 126, 204, 11, 232, 220, 22, 209, 67, 182, 197, 169, 241, 21, 215, 10, 61, 252, 117, 224, 207, 135, 232, 152, 48, 170, 41, 115, 91, 114, 39, 3, 7, 175, 40, 140, 124, 249, 72, 175, 10, 149, 120, 238, 176, 208, 123, 143, 216, 119, 255, 241, 108, 109, 44, 119, 191, 157, 48, 43, 194, 2, 62, 224, 58, 217, 90, 167, 248, 117, 84, 152, 112, 138, 158, 152, 86, 70, 130, 167, 234, 180, 156, 22, 206, 132, 76, 126, 107, 58, 157, 115, 213, 43, 135, 183, 178, 143, 121, 232, 255, 139, 137, 162, 7, 59, 246, 248, 107, 103, 116, 24, 155, 64, 31, 2, 170, 44, 140, 125, 8, 122, 70, 91, 151, 35, 78, 174, 162, 145, 232, 216, 140, 168, 97, 141, 185, 100, 73, 150, 15, 43, 166, 65, 4, 106, 71, 147, 192, 138, 31, 135, 105, 65, 202, 187, 229, 40, 129, 156, 93, 23, 101, 254, 129, 97, 196, 56, 130, 237, 13, 236, 8, 42, 112, 171, 101, 68, 152, 208, 49, 131, 230, 86, 135, 131, 167, 39, 18, 241, 218, 224, 188, 180, 56, 13, 232, 130, 7, 251, 132, 243, 181, 76, 142, 248, 165, 6, 213, 121, 240, 212, 201, 96, 217, 212, 10, 170, 221, 65, 231, 252, 111, 84, 163, 206, 27, 98, 205, 113, 64, 158, 52, 11, 123, 66, 104, 36, 34, 247, 159, 178, 236, 107, 29, 193, 72, 218, 166, 123, 35, 219, 41, 163, 207, 112, 141, 237, 129, 9, 141, 94, 203, 73, 100, 120, 241, 178, 205, 127, 35, 203, 96, 139, 78, 177, 111, 124, 104, 109, 195, 244, 182, 240, 191, 104, 175, 42, 214, 229, 116, 188, 39, 151, 155, 1, 47, 176, 248, 109, 165, 117, 174, 43, 163, 6, 252, 16, 232, 225, 92, 53, 88, 164, 15, 119, 200, 0, 121, 73, 104, 240, 88, 188, 227, 113, 89, 246, 89, 194, 70, 58, 17, 41, 246, 38, 108, 85, 64, 231, 139, 253, 27, 252, 146, 251, 162, 250, 173, 112, 249, 88, 237, 159, 81, 180, 8, 53, 73, 118, 52, 73, 71, 63, 8, 69, 66, 109, 3, 54, 228, 67, 220, 160, 218, 242, 18, 62, 209, 138, 248, 216, 73, 151, 137, 119, 6, 125, 253, 74, 10, 171, 246, 222, 245, 209, 234, 178, 202, 235, 212, 251, 172, 200, 186, 109, 18, 101, 35, 87, 214, 184, 119, 221, 77, 30, 36, 112, 108, 118, 232, 201, 126, 251, 44, 149, 227, 244, 205, 35, 115, 69, 130, 193, 38, 192, 201, 88, 132, 92, 150, 113, 214, 50, 192, 141, 169, 22, 158, 30, 91, 78, 185, 162, 164, 183, 251, 49, 207, 5, 147, 124, 112, 235, 92, 233, 95, 218, 48, 214, 7]
+                ASN1Sequence
+                    ASN1Sequence
+                        ASN1Object : length 5 ''
+                        ASN1Integer : 307469104992108463721008581612001745374 : 0x00E7506547DD77755AFE5DE6B53EFAD9DE 
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.1.11 - sha256WithRSAEncryption
+                            ASN1Null
+                        ASN1Sequence
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.6 - countryName
+                                    ASN1PrintableString : FR
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.10 - organizationName
+                                    ASN1Object : length 11 'DHIMYOTIS'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.11 - organizationalUnitName
+                                    ASN1Object : length 21 '0002 48146308100036'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.97 - organizationIdentifier
+                                    ASN1Object : length 22 'NTRFR-48146308100036'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.3 - commonName
+                                    ASN1Object : length 20 'Certigna Entity CA'
+                        ASN1Sequence
+                            ASN1UtcTime : 2024-06-04 22:00:00.000Z
+                            ASN1UtcTime : 2027-06-04 21:59:59.000Z
+                        ASN1Sequence
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.6 - countryName
+                                    ASN1PrintableString : FR
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.10 - organizationName
+                                    ASN1Object : length 11 'DHIMYOTIS'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.97 - organizationIdentifier
+                                    ASN1Object : length 22 'NTRFR-48146308100036'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.11 - organizationalUnitName
+                                    ASN1Object : length 21 '0002 48146308100036'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.3 - commonName
+                                    ASN1Object : length 19 'DHIMYOTIS - TSU19'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.5 - serialNumber
+                                    ASN1PrintableString : T307221024
+                        ASN1Sequence
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 1.2.840.113549.1.1.1 - rsaEncryption
+                                ASN1Null
+                            ASN1BitString : [48, 130, 1, 138, 2, 130, 1, 129, 0, 220, 146, 2, 35, 90, 115, 18, 4, 237, 116, 247, 22, 217, 89, 141, 108, 241, 195, 241, 175, 236, 250, 21, 156, 86, 176, 233, 243, 146, 153, 159, 242, 165, 207, 124, 217, 164, 126, 230, 45, 146, 222, 219, 16, 200, 44, 43, 52, 254, 24, 116, 242, 45, 212, 10, 34, 215, 209, 33, 70, 73, 133, 20, 120, 202, 251, 244, 7, 129, 171, 204, 34, 106, 58, 78, 180, 37, 198, 190, 112, 182, 59, 154, 206, 123, 125, 169, 158, 43, 233, 235, 8, 194, 89, 253, 148, 185, 144, 95, 81, 34, 229, 117, 5, 148, 26, 186, 97, 24, 242, 1, 206, 226, 24, 30, 22, 58, 70, 209, 164, 105, 161, 82, 84, 54, 171, 50, 37, 8, 220, 73, 191, 18, 42, 207, 18, 15, 47, 171, 155, 62, 134, 217, 103, 139, 255, 141, 77, 95, 235, 66, 174, 96, 67, 188, 99, 129, 1, 199, 144, 234, 70, 186, 62, 67, 173, 137, 86, 90, 38, 0, 50, 10, 158, 157, 254, 20, 138, 100, 19, 153, 199, 65, 241, 91, 19, 95, 200, 143, 254, 173, 214, 61, 212, 202, 234, 239, 194, 160, 201, 63, 175, 102, 17, 201, 173, 211, 237, 48, 28, 111, 236, 153, 74, 69, 129, 140, 47, 214, 76, 28, 187, 40, 15, 9, 126, 224, 90, 30, 196, 165, 94, 131, 169, 64, 74, 192, 212, 24, 129, 232, 165, 30, 53, 236, 177, 53, 106, 5, 77, 189, 28, 96, 67, 218, 170, 175, 236, 84, 219, 144, 15, 110, 217, 24, 34, 151, 147, 129, 24, 248, 196, 156, 170, 66, 241, 18, 102, 80, 201, 254, 52, 159, 90, 114, 125, 193, 142, 99, 104, 98, 121, 255, 41, 154, 115, 209, 59, 107, 115, 152, 183, 212, 50, 162, 204, 143, 215, 0, 195, 57, 71, 95, 190, 139, 65, 127, 236, 71, 198, 29, 41, 134, 48, 66, 255, 176, 105, 94, 82, 203, 100, 95, 53, 182, 91, 162, 157, 48, 71, 255, 37, 35, 250, 58, 165, 8, 184, 73, 7, 166, 204, 201, 41, 71, 125, 226, 216, 187, 77, 132, 38, 169, 97, 253, 138, 138, 15, 66, 42, 106, 9, 23, 230, 195, 24, 176, 249, 53, 24, 51, 84, 12, 129, 2, 3, 1, 0, 1]
+                        ASN1Sequence
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 1.3.6.1.5.5.7.1.1 - authorityInfoAccess
+                                ASN1OctetString  : length 224 '[0x4, 0x81, 0xdd, 0x30, 0x81, 0xda, 0x30, 0x3d, 0 ...
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.35 - authorityKeyIdentifier
+                                ASN1OctetString  : length 26 '[0x4, 0x18, 0x30, 0x16, 0x80, 0x14, 0xa5, 0x3f, 0 ...
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.19 - basicConstraints
+                                ASN1OctetString  : length 4 '[0x4, 0x2, 0x30, 0x0]'
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.32 - certificatePolicies
+                                ASN1OctetString  : length 82 '[0x4, 0x50, 0x30, 0x4e, 0x30, 0x4c, 0x6, 0xb, 0x2 ...
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.31 - cRLDistributionPoints
+                                ASN1OctetString  : length 92 '[0x4, 0x5a, 0x30, 0x58, 0x30, 0x2b, 0xa0, 0x29, 0 ...
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.37 - extKeyUsage
+                                ASN1Boolean : true
+                                ASN1OctetString  : length 14 '[0x4, 0xc, 0x30, 0xa, 0x6, 0x8, 0x2b, 0x6, 0x1, 0x5, 0x5, 0x7, 0x3, 0x8]'
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.15 - keyUsage
+                                ASN1Boolean : true
+                                ASN1OctetString  : length 6 '[0x4, 0x4, 0x3, 0x2, 0x6, 0xc0]'
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 1.3.6.1.5.5.7.1.3 - unknown
+                                ASN1OctetString  : length 134 '[0x4, 0x81, 0x83, 0x30, 0x81, 0x80, 0x30, 0x8, 0x ...
+                            ASN1Sequence
+                                ASN1ObjectIdentifier : 2.5.29.14 - subjectKeyIdentifier
+                                ASN1OctetString  : length 24 '[0x4, 0x16, 0x4, 0x14, 0x8b, 0x55, 0x29, 0xdf, 0x ...
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 1.2.840.113549.1.1.11 - sha256WithRSAEncryption
+                        ASN1Null
+                    ASN1BitString : [44, 60, 237, 56, 178, 216, 14, 115, 23, 46, 171, 189, 170, 67, 112, 215, 48, 20, 255, 228, 185, 46, 38, 56, 184, 24, 244, 132, 178, 235, 253, 12, 32, 100, 199, 119, 2, 56, 116, 230, 252, 254, 226, 113, 81, 45, 184, 25, 135, 87, 196, 83, 240, 24, 86, 54, 178, 23, 41, 9, 47, 225, 252, 127, 238, 238, 110, 234, 138, 215, 67, 221, 217, 243, 56, 235, 230, 134, 76, 195, 116, 108, 145, 46, 89, 177, 247, 33, 239, 139, 86, 251, 171, 81, 69, 15, 91, 37, 15, 160, 233, 116, 134, 194, 50, 162, 46, 218, 191, 37, 39, 239, 134, 7, 245, 133, 207, 120, 152, 225, 47, 20, 145, 222, 22, 19, 159, 6, 104, 235, 217, 127, 57, 250, 22, 48, 184, 173, 197, 225, 123, 115, 143, 165, 252, 76, 3, 46, 185, 84, 101, 220, 237, 202, 241, 26, 159, 220, 238, 191, 210, 69, 120, 206, 53, 48, 48, 236, 196, 68, 116, 13, 71, 11, 10, 111, 64, 33, 129, 215, 94, 65, 197, 93, 155, 90, 70, 69, 33, 173, 43, 140, 134, 127, 99, 204, 204, 40, 83, 186, 224, 218, 63, 51, 164, 168, 148, 43, 250, 241, 33, 50, 66, 112, 54, 167, 77, 189, 235, 212, 252, 195, 134, 209, 157, 69, 177, 140, 63, 155, 39, 29, 14, 28, 227, 91, 162, 105, 4, 207, 124, 111, 169, 245, 0, 101, 43, 37, 124, 188, 202, 149, 31, 68, 27, 151, 87, 137, 13, 28, 58, 173, 240, 27, 2, 162, 222, 170, 152, 27, 222, 109, 209, 200, 214, 27, 177, 127, 35, 113, 40, 153, 72, 53, 52, 22, 33, 62, 229, 187, 113, 247, 133, 105, 243, 102, 233, 182, 134, 68, 161, 43, 21, 139, 9, 250, 233, 245, 1, 122, 230, 204, 199, 54, 56, 59, 189, 97, 116, 215, 66, 221, 64, 213, 154, 57, 246, 117, 87, 25, 175, 0, 19, 145, 71, 203, 114, 134, 246, 212, 200, 36, 231, 23, 41, 112, 199, 200, 58, 71, 184, 100, 72, 243, 139, 55, 203, 161, 160, 153, 123, 25, 181, 141, 83, 68, 174, 134, 93, 125, 55, 78, 83, 203, 210, 38, 239, 6, 183, 61, 44, 177, 41, 84, 106, 211, 65, 8, 210, 67, 62, 148, 90, 10, 196, 50, 224, 50, 121, 209, 136, 139, 28, 11, 22, 220, 162, 115, 112, 144, 124, 59, 116, 225, 99, 103, 75, 6, 135, 68, 146, 127, 189, 43, 108, 223, 144, 248, 39, 169, 104, 249, 19, 3, 1, 172, 250, 149, 123, 161, 204, 7, 202, 186, 153, 164, 197, 162, 134, 200, 231, 196, 55, 185, 241, 71, 63, 25, 46, 77, 91, 29, 21, 202, 247, 62, 161, 216, 103, 153, 37, 208, 17, 255, 128, 253, 47, 2, 122, 83, 64, 193, 23, 198, 252, 9, 16, 31, 210, 224, 197, 234, 164, 162, 196, 48, 98, 69, 88, 80, 99, 104, 163, 221, 134, 201, 201, 62, 170, 138, 72, 47]
+            ASN1Set
+                ASN1Sequence
+                    ASN1Integer : 1 : 0x01 
+                    ASN1Sequence
+                        ASN1Sequence
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.6 - countryName
+                                    ASN1PrintableString : FR
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.10 - organizationName
+                                    ASN1Object : length 11 'DHIMYOTIS'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.11 - organizationalUnitName
+                                    ASN1Object : length 21 '0002 48146308100036'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.97 - organizationIdentifier
+                                    ASN1Object : length 22 'NTRFR-48146308100036'
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1ObjectIdentifier : 2.5.4.3 - commonName
+                                    ASN1Object : length 20 'Certigna Entity CA'
+                        ASN1Integer : 307469104992108463721008581612001745374 : 0x00E7506547DD77755AFE5DE6B53EFAD9DE 
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 2.16.840.1.101.3.4.2.1 - sha256
+                    ASN1Sequence
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.3 - contentType
+                            ASN1Set
+                                ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.1.4 - id-ct-TSTInfo
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.5 - signing-time
+                            ASN1Set
+                                ASN1UtcTime : 2024-09-11 06:51:22.000Z
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.4 - id-messageDigest
+                            ASN1Set
+                                ASN1OctetString  : length 34 '[0x4, 0x20, 0x88, 0xa6, 0xb7, 0x82, 0x5d, 0xb3, 0 ...
+                        ASN1Sequence
+                            ASN1ObjectIdentifier : 1.2.840.113549.1.9.16.2.47 - id-aa-signingCertificateV2
+                            ASN1Set
+                                ASN1Sequence
+                                    ASN1Sequence
+                                        ASN1Sequence
+                                            ASN1OctetString  : length 34 '[0x4, 0x20, 0x49, 0xcf, 0xf9, 0xc7, 0x8d, 0x67, 0 ...
+                    ASN1Sequence
+                        ASN1ObjectIdentifier : 1.2.840.113549.1.1.11 - sha256WithRSAEncryption
+                        ASN1Null
+                    ASN1OctetString  : length 388 '[0x4, 0x82, 0x1, 0x80, 0x3f, 0x5, 0xae, 0xa4, 0xf ...

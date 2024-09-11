@@ -1,8 +1,9 @@
 # Changelog
 
-### 1.0.12
+### 1.0.13
 
 - extract TimeStampToken TST and displays it
+- add a list of freetsa servers, some are tested successfully
 
 
 
