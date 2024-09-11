@@ -1,5 +1,12 @@
 # Flutter TSA (Time Stamping Authority)  client rfc3161
 
+This solution is based upon https://www.ietf.org/rfc/rfc3161.txt, 
+Keep a proof that a file has not been created or updated after the exact moment you re using this library
+
+Septembre, the 10th, 19:57:16
+
+
+
 <img width="999" alt="Capture d’écran 2024-09-10 à 22 04 44" src="https://github.com/user-attachments/assets/3fc4c3be-88cc-42e6-8a57-fb4c7f3f337c">
 
 
