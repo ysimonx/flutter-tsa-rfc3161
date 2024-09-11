@@ -97,9 +97,10 @@ class _MyHomePageState extends State<MyHomePage> {
         // TimeStampToken ?
         if (kDebugMode) {
           print(tsr.asn1SequenceTSTInfo);
-          if (tsr.asn1SequenceTSTInfo != null) {
-            _dumpTST = TSACommon.explore(tsr.asn1SequenceTSTInfo!, 0);
-          }
+        }
+
+        if (tsr.asn1SequenceTSTInfo != null) {
+          _dumpTST = TSACommon.explore(tsr.asn1SequenceTSTInfo!, 0);
         }
 
         setState(() {});
