@@ -40,7 +40,7 @@ import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 ```
 
 
-## Note 1 
+## TimeStampQuery : tsq 
 
 If you want to save the tsq (TimeStampQuery), you can 
 ```
@@ -53,6 +53,7 @@ generated with this openssl command
 ```
 openssl ts -query -data file.txt -no_nonce -sha512 -cert -out file.digicert.tsq
 ```
+## TimeStampResponse : tsr is the one you should save/share
 
 The tsq TimeStampResponse can be saved or shared as a proof 
 
@@ -84,17 +85,17 @@ file.digicert.tsr can be read with this following openssl cli command
 ```
 
 
-## Note 2
+## Anyone can check the TimeStampResponse tsr given by Digicert
 
 
 As the file.digicert.tsr contains the
  "Time stamp: Sep  7 08:37:47 2024 GMT"
 
-In addition to "file.txt", 
-you can shared the file "file.digicert.tsr" at anyone who need to be sure that file.txt has not been created or modified after "Sep  7 08:37:47 2024 GMT"
+In addition to your 'file' 
+you can shared the file 'file'.tsr at anyone who need to be sure that file.txt has not been created or modified after "Sep  7 08:37:47 2024 GMT"
 
-
-Anyone with both "file.txt" and "file.digicert.tsr" can verify the timestamp provided by digicert 
+For instance : 
+Anyone with both "file.txt" and "file.txt.tsr" can verify the timestamp provided by digicert 
 
 ```
 
@@ -114,7 +115,7 @@ cat DigiCertTrustedRootG4.cer >> CHAIN.pem
 # let's verify that the timestamp proof is good
 #
 
-$ openssl ts -verify -data file.txt -in file.digicert.tsr -CAfile DigiCertAssuredIDRootCA.crt.pem -untrusted CHAIN.pem
+$ openssl ts -verify -data file.txt -in file.txt.tsr -CAfile DigiCertAssuredIDRootCA.crt.pem -untrusted CHAIN.pem
 
 Verification: OK
 
@@ -122,7 +123,7 @@ Verification: OK
 ```
 
 
-## Note 3 
+## Authentication if needed
 
 authentication is available
 
@@ -132,12 +133,12 @@ authentication is available
           credentials: "$user:$password");
 ```
 
-## Note 4 
+## Hash Algorithms
 
 Hash algorithms: SHA1, SHA256, SHA384, SHA512
 
 
-## Note 5 : 
+## Parsing TimeStampResponse tsq : 
 
 The TSAResponse class is provided as an attempt. ASN.1 data are very difficult to parse.
 However, you can parse the http response into a ASN1Sequence
