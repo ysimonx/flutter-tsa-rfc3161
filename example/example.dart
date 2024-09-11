@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       _iStatusCode = response.statusCode;
       if (_iStatusCode == 200) {
-        _errorMessage = "good";
+        _errorMessage = "ok";
         TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
         tsr.write("file.digicert.tsr");
 

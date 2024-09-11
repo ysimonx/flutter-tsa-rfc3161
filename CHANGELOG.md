@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.0.14
+- you can "share" the .tsr file
+
 ### 1.0.13
 
 - extract TimeStampToken TST and displays it

@@ -8,6 +8,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:tsa_rfc3161/src/tsa_common.dart';
 
 import 'package:tsa_rfc3161/tsa_rfc3161.dart';
@@ -48,6 +49,11 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _dumpTSA = "";
   String? _dumpTST = "";
 
+  TSARequest? tsq;
+  TSAResponse? tsr;
+
+  File? file;
+
   void _timestamp() async {
     setState(() {
       _iStatusCode = 0;
@@ -57,56 +63,52 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-    int nonceValue =
-        DateTime.now().millisecondsSinceEpoch; // Utiliser un entier unique
-
     if (result == null) {
       return;
     }
-    File file = File(result.files.single.path!);
+
+    int nonceValue =
+        DateTime.now().millisecondsSinceEpoch; // Utiliser un entier unique
+
+    file = File(result.files.single.path!);
+    if (file == null) {
+      return;
+    }
 
     try {
-      TSARequest tsq = TSARequest.fromFile(
-          filepath: file.path,
+      tsq = TSARequest.fromFile(
+          filepath: file!.path,
           algorithm: TSAHashAlgo.sha256,
           nonce: nonceValue,
           certReq: true);
 
-      tsq.write("file.digicert.tsq");
-      tsq.hexaPrint();
-      // tsq.hexaPrint();,
+      if (tsq == null) {
+        return;
+      }
 
-      // tsq.write("test.tsq");
-
+      // tsq!.write("file.digicert.tsq");
       Response response =
-          await tsq.run(hostname: "http://timestamp.digicert.com");
-
-      /*
-      
-      example with Certigna server
-      Response response = await tsq.run(
-          hostname: "https://timestamp.dhimyotis.com/api/v1/",
-          credentials: "$user:$password");
-          
-      */
+          await tsq!.run(hostname: "http://timestamp.digicert.com");
 
       _iStatusCode = response.statusCode;
       if (_iStatusCode == 200) {
-        _errorMessage = "good";
-        TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
-        tsr.write("file.digicert.tsr");
+        _errorMessage = "ok";
+        tsr = TSAResponse.fromHTTPResponse(response: response);
 
-        // ASN1Sequence tsr.asn1sequence contains the parsed response
-        _dumpTSA = TSACommon.explore(tsr.asn1sequence, 0);
+        if (tsr != null) {
+          tsr!.write("file.digicert.tsr");
 
-        // TimeStampToken ?
-        if (kDebugMode) {
-          print(tsr.asn1SequenceTSTInfo);
+          // ASN1Sequence tsr.asn1sequence contains the parsed response
+          _dumpTSA = TSACommon.explore(tsr!.asn1sequence, 0);
+
+          // TimeStampToken ?
+          if (kDebugMode) {
+            print(tsr!.asn1SequenceTSTInfo);
+          }
+          if (tsr!.asn1SequenceTSTInfo != null) {
+            _dumpTST = TSACommon.explore(tsr!.asn1SequenceTSTInfo!, 0);
+          }
         }
-        if (tsr.asn1SequenceTSTInfo != null) {
-          _dumpTST = TSACommon.explore(tsr.asn1SequenceTSTInfo!, 0);
-        }
-
         setState(() {});
         /* 
         openssl ts -reply -in test.tsr -text provides
@@ -151,25 +153,60 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const Row(mainAxisSize: MainAxisSize.max, children: [
-                Text(
-                  "press button, choose a file and wait for digicert timestamp",
-                )
-              ]),
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                child: Row(mainAxisSize: MainAxisSize.max, children: [
+                  Text(
+                    "press button, choose a file and wait for digicert timestamp",
+                  )
+                ]),
+              ),
               if (_iStatusCode != 0)
-                Row(mainAxisSize: MainAxisSize.max, children: [
-                  Text("status code from tsa server = $_iStatusCode")
-                ]),
+                Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Row(mainAxisSize: MainAxisSize.max, children: [
+                      Text("status code from tsa server = $_iStatusCode")
+                    ])),
               if (_errorMessage != "")
-                Row(mainAxisSize: MainAxisSize.max, children: [
-                  Text(_errorMessage!),
-                ]),
+                Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Row(mainAxisSize: MainAxisSize.max, children: [
+                      Text(_errorMessage!),
+                    ])),
+              if (_iStatusCode == 200)
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      IconButton(
+                          onPressed: onPressed, icon: const Icon(Icons.share)),
+                      const Text("share tsr file")
+                    ]),
               const SizedBox(height: 50),
               if (_dumpTST != "")
                 Container(
-                    color: Colors.lightGreen, child: SelectableText(_dumpTST!)),
+                    color: Colors.lightGreen,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        const Text("TimeStampToken Sequence"),
+                        const SizedBox(height: 10),
+                        SelectableText(_dumpTST!),
+                      ],
+                    )),
               const SizedBox(height: 50),
-              if (_dumpTSA != "") SelectableText(_dumpTSA!)
+              if (_dumpTSA != "")
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      const Text("Full ASN.1 Sequence"),
+                      const SizedBox(height: 10),
+                      SelectableText(_dumpTSA!),
+                    ],
+                  ),
+                )
             ],
           ),
         ),
@@ -180,5 +217,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void onPressed() async {
+    if (tsr != null && file != null) {
+      String dest = "${file!.path.split('/').last}.tsr";
+      await tsr!.share(dest);
+    }
   }
 }

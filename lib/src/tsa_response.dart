@@ -1,6 +1,7 @@
 import 'package:asn1lib/asn1lib.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'tsa_common.dart';
 import 'tsa_oid.dart';
@@ -75,5 +76,17 @@ class TSAResponse extends TSACommon {
     }
 
     return mapOidSeq;
+  }
+
+  Future<void> share(String filename) async {
+    Uint8List data = asn1sequence.encodedBytes;
+    final result = await Share.shareXFiles(
+        [XFile.fromData(data, mimeType: 'application/timestamp-reply')],
+        fileNameOverrides: [filename]);
+    if (result.status == ShareResultStatus.success) {
+      if (kDebugMode) {
+        print('Thank you for sharing the picture!');
+      }
+    }
   }
 }
