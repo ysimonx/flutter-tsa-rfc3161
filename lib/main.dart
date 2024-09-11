@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // tsq.write("test.tsq");
 
       Response response =
-          await tsq.run(hostname: "http://timestamp.digicert.com");
+          await tsq.run(hostname: "http://timestamp.sectigo.com");
 
       /*
       

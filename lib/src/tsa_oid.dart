@@ -39,7 +39,10 @@ class TSAOid {
       "1.2.840.113549.1.9.16.2.47": "id-aa-signingCertificateV2",
       "1.2.840.113549.1.1.12": "sha384WithRSAEncryption",
       "2.16.840.1.101.3.4.2.2": "sha384",
-      "1.3.14.3.2.26": "sha1"
+      "1.3.14.3.2.26": "sha1",
+      "1.3.6.1.4.1.6449.2.1.1": "Default Time-stamping Policy",
+      "2.5.4.8": "stateOrProvinceName",
+      "2.5.4.7": "localityName"
     };
 
     if (oids.containsKey(oid)) {
