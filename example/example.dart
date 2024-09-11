@@ -1,10 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:tsa_rfc3161/src/tsa_common.dart';
-
 import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 
 void main() {
@@ -18,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'TSA Rfc3161s Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -38,100 +35,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int? _iStatusCode = 0;
+  TSARequest? tsq;
+  TSAResponse? tsr;
   String? _errorMessage = "";
   String? _dumpTSA = "";
   String? _dumpTST = "";
 
-  void _timestamp() async {
-    setState(() {
-      _iStatusCode = 0;
-      _dumpTSA = "";
-      _dumpTST = "";
-      _errorMessage = "";
-    });
-
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    int nonceValue =
-        DateTime.now().millisecondsSinceEpoch; // Utiliser un entier unique
-
-    if (result == null) {
-      return;
-    }
-    File file = File(result.files.single.path!);
-
-    try {
-      TSARequest tsq = TSARequest.fromFile(
-          filepath: file.path,
-          algorithm: TSAHashAlgo.sha256,
-          nonce: nonceValue,
-          certReq: true);
-
-      tsq.write("file.digicert.tsq");
-      tsq.hexaPrint();
-      // tsq.hexaPrint();,
-
-      // tsq.write("test.tsq");
-
-      Response response =
-          await tsq.run(hostname: "http://timestamp.digicert.com");
-
-      /*
-      
-      example with Certigna server
-      Response response = await tsq.run(
-          hostname: "https://timestamp.dhimyotis.com/api/v1/",
-          credentials: "$user:$password");
-          
-      */
-
-      _iStatusCode = response.statusCode;
-      if (_iStatusCode == 200) {
-        _errorMessage = "ok";
-        TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
-        tsr.write("file.digicert.tsr");
-
-        // ASN1Sequence tsr.asn1sequence contains the parsed response
-        _dumpTSA = TSACommon.explore(tsr.asn1sequence, 0);
-
-        // TimeStampToken ?
-        if (kDebugMode) {
-          print(tsr.asn1SequenceTSTInfo);
-        }
-
-        if (tsr.asn1SequenceTSTInfo != null) {
-          _dumpTST = TSACommon.explore(tsr.asn1SequenceTSTInfo!, 0);
-        }
-
-        setState(() {});
-        /* 
-        openssl ts -reply -in test.tsr -text provides
-        
-        Version: 1
-        Policy OID: 2.16.840.1.114412.7.1
-        Hash Algorithm: sha512
-        Message data:
-            0000 - 89 bd 94 b7 92 4b 2f 16-d8 c5 c0 0f 11 02 12 b1   .....K/.........
-            0010 - bb b1 5a bb 72 7d be 06-33 bf 7d d0 9f 6f d6 07   ..Z.r}..3.}..o..
-            0020 - 02 4d a3 df d6 7b cf c7-89 e2 2f 2d d9 fa 9b c3   .M...{..../-....
-            0030 - 39 9a d4 34 11 e1 11 d8-c6 7b a7 a0 b4 96 42 2d   9..4.....{....B-
-        Serial number: 0x4194EF54150D2496B2C3F1A78D82C41B
-        Time stamp: Sep  7 08:37:47 2024 GMT
-        Accuracy: unspecified
-        Ordering: no
-        Nonce: 0x0191CBA1D914
-        TSA: unspecified
-        Extensions:
-        */
-      } else {
-        _errorMessage = "error";
-      }
-    } on Exception catch (e) {
-      _iStatusCode = 0;
-      _errorMessage = "exception : ${e.toString()}";
-    }
-    setState(() {});
-  }
+  File? file;
 
   @override
   Widget build(BuildContext context) {
@@ -147,34 +57,114 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              const Row(mainAxisSize: MainAxisSize.max, children: [
-                Text(
-                  "press button, choose a file and wait for digicert timestamp",
-                )
-              ]),
-              if (_iStatusCode != 0)
-                Row(mainAxisSize: MainAxisSize.max, children: [
-                  Text("status code from tsa server = $_iStatusCode")
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                child: Row(mainAxisSize: MainAxisSize.max, children: [
+                  Text(
+                    "press button, choose a file and wait for digicert timestamp",
+                  )
                 ]),
+              ),
+              if (tsr != null)
+                Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Row(mainAxisSize: MainAxisSize.max, children: [
+                      Text(
+                          "status code from tsa server = ${tsr!.response.statusCode}")
+                    ])),
               if (_errorMessage != "")
-                Row(mainAxisSize: MainAxisSize.max, children: [
-                  Text(_errorMessage!),
-                ]),
+                Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Row(mainAxisSize: MainAxisSize.max, children: [
+                      Text(_errorMessage!),
+                    ])),
               const SizedBox(height: 50),
               if (_dumpTST != "")
                 Container(
-                    color: Colors.lightGreen, child: SelectableText(_dumpTST!)),
+                    color: Colors.lightGreen,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        const Text("TimeStampToken Sequence"),
+                        const SizedBox(height: 10),
+                        SelectableText(_dumpTST!),
+                      ],
+                    )),
               const SizedBox(height: 50),
-              if (_dumpTSA != "") SelectableText(_dumpTSA!)
+              if (_dumpTSA != "")
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      const Text("Full ASN.1 Sequence"),
+                      const SizedBox(height: 10),
+                      SelectableText(_dumpTSA!),
+                    ],
+                  ),
+                )
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _timestamp,
-        tooltip: 'Timestamp',
+        onPressed: _pickFileAndTimestamp,
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void _pickFileAndTimestamp() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result == null) {
+      return;
+    }
+
+    _processFile(result.files.single.path!);
+  }
+
+  Future<void> _processFile(filepath) async {
+    setState(() {
+      tsr = null;
+      _dumpTSA = "";
+      _dumpTST = "";
+      _errorMessage = "";
+    });
+
+    int nonceValue =
+        DateTime.now().millisecondsSinceEpoch; // Utiliser un entier unique
+
+    try {
+      tsq = TSARequest.fromFile(
+          filepath: filepath,
+          algorithm: TSAHashAlgo.sha256,
+          nonce: nonceValue,
+          certReq: true);
+
+      if (tsq == null) {
+        return;
+      }
+
+      tsr = await TSAResponse(tsq!, hostname: "http://timestamp.digicert.com")
+          .run();
+
+      if (tsr != null) {
+        _errorMessage = "ok";
+
+        // ASN1Sequence tsr.asn1sequence contains the parsed response
+        // we can "dump"
+        _dumpTSA = TSACommon.explore(tsr!.asn1sequence, 0);
+
+        if (tsr!.asn1SequenceTSTInfo != null) {
+          _dumpTST = TSACommon.explore(tsr!.asn1SequenceTSTInfo!, 0);
+        }
+        setState(() {});
+      } else {
+        _errorMessage = "error";
+      }
+    } on Exception catch (e) {
+      _errorMessage = "exception : ${e.toString()}";
+    }
+    setState(() {});
   }
 }

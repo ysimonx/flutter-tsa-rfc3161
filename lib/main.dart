@@ -1,16 +1,8 @@
-// cf https://pub.dev/documentation/asn1lib/latest/asn1lib/ASN1Sequence-class.html
-// cf https://github.com/pyauth/tsp-client
-// cf https://chatgpt.com/c/94d7db76-cf74-4d96-8075-fdb2547605c3
-// cf le bas de https://gist.github.com/hnvn/38ef37566471f1135773b5426fb73011
-
-import 'dart:io';
+import 'dart:async';
 import 'package:file_picker/file_picker.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import 'package:tsa_rfc3161/src/tsa_common.dart';
-
+import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
+import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 
 void main() {
@@ -24,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'TSA Rfc3161s Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -36,7 +28,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -44,99 +35,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int? _iStatusCode = 0;
+  TSARequest? tsq;
+  TSAResponse? tsr;
   String? _errorMessage = "";
   String? _dumpTSA = "";
   String? _dumpTST = "";
 
-  TSARequest? tsq;
-  TSAResponse? tsr;
+  late StreamSubscription _intentDataStreamSubscription;
 
-  File? file;
+  @override
+  void dispose() {
+    _intentDataStreamSubscription.cancel();
+    super.dispose();
+  }
 
-  void _timestamp() async {
-    setState(() {
-      _iStatusCode = 0;
-      _dumpTSA = "";
-      _dumpTST = "";
-      _errorMessage = "";
-    });
-
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result == null) {
-      return;
-    }
-
-    int nonceValue =
-        DateTime.now().millisecondsSinceEpoch; // Utiliser un entier unique
-
-    file = File(result.files.single.path!);
-    if (file == null) {
-      return;
-    }
-
-    try {
-      tsq = TSARequest.fromFile(
-          filepath: file!.path,
-          algorithm: TSAHashAlgo.sha256,
-          nonce: nonceValue,
-          certReq: true);
-
-      if (tsq == null) {
-        return;
-      }
-
-      // tsq!.write("file.digicert.tsq");
-      Response response =
-          await tsq!.run(hostname: "http://timestamp.digicert.com");
-
-      _iStatusCode = response.statusCode;
-      if (_iStatusCode == 200) {
-        _errorMessage = "ok";
-        tsr = TSAResponse.fromHTTPResponse(response: response);
-
-        if (tsr != null) {
-          tsr!.write("file.digicert.tsr");
-
-          // ASN1Sequence tsr.asn1sequence contains the parsed response
-          _dumpTSA = TSACommon.explore(tsr!.asn1sequence, 0);
-
-          // TimeStampToken ?
-          if (kDebugMode) {
-            print(tsr!.asn1SequenceTSTInfo);
-          }
-          if (tsr!.asn1SequenceTSTInfo != null) {
-            _dumpTST = TSACommon.explore(tsr!.asn1SequenceTSTInfo!, 0);
-          }
-        }
-        setState(() {});
-        /* 
-        openssl ts -reply -in test.tsr -text provides
-        
-        Version: 1
-        Policy OID: 2.16.840.1.114412.7.1
-        Hash Algorithm: sha512
-        Message data:
-            0000 - 89 bd 94 b7 92 4b 2f 16-d8 c5 c0 0f 11 02 12 b1   .....K/.........
-            0010 - bb b1 5a bb 72 7d be 06-33 bf 7d d0 9f 6f d6 07   ..Z.r}..3.}..o..
-            0020 - 02 4d a3 df d6 7b cf c7-89 e2 2f 2d d9 fa 9b c3   .M...{..../-....
-            0030 - 39 9a d4 34 11 e1 11 d8-c6 7b a7 a0 b4 96 42 2d   9..4.....{....B-
-        Serial number: 0x4194EF54150D2496B2C3F1A78D82C41B
-        Time stamp: Sep  7 08:37:47 2024 GMT
-        Accuracy: unspecified
-        Ordering: no
-        Nonce: 0x0191CBA1D914
-        TSA: unspecified
-        Extensions:
-        */
-      } else {
-        _errorMessage = "error";
-      }
-    } on Exception catch (e) {
-      _iStatusCode = 0;
-      _errorMessage = "exception : ${e.toString()}";
-    }
-    setState(() {});
+  @override
+  void initState() {
+    super.initState();
+    // For sharing images coming from outside the app while the app is in the memory
+    _initSharingSubscription();
   }
 
   @override
@@ -161,11 +78,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ]),
               ),
-              if (_iStatusCode != 0)
+              if (tsr != null)
                 Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                     child: Row(mainAxisSize: MainAxisSize.max, children: [
-                      Text("status code from tsa server = $_iStatusCode")
+                      Text(
+                          "status code from tsa server = ${tsr!.response.statusCode}")
                     ])),
               if (_errorMessage != "")
                 Padding(
@@ -173,14 +91,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Row(mainAxisSize: MainAxisSize.max, children: [
                       Text(_errorMessage!),
                     ])),
-              if (_iStatusCode == 200)
+              if (tsr != null)
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       IconButton(
-                          onPressed: onPressed, icon: const Icon(Icons.share)),
-                      const Text("share tsr file")
+                          onPressed: _shareOriginalFileAndItsTimestampResponse,
+                          icon: const Icon(Icons.share)),
+                      const Text(
+                          "Share 2 files : the original one and the timestamp response")
                     ]),
               const SizedBox(height: 50),
               if (_dumpTST != "")
@@ -212,17 +132,96 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _timestamp,
-        tooltip: 'Timestamp',
+        onPressed: _pickFileAndTimestamp,
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void onPressed() async {
-    if (tsr != null && file != null) {
-      String dest = "${file!.path.split('/').last}.tsr";
-      await tsr!.share(dest);
+  void _shareOriginalFileAndItsTimestampResponse() async {
+    if (tsr != null) {
+      await tsr!.share();
     }
+  }
+
+  // you can share any file to this app : it will timestamp
+  void _initSharingSubscription() {
+    // For sharing files coming from outside the app while the app is in the memory
+    _intentDataStreamSubscription = FlutterSharingIntent.instance
+        .getMediaStream()
+        .listen((List<SharedFile> value) {
+      if (value.isNotEmpty) {
+        SharedFile f0 = value[0];
+        _timestampFile(f0.value);
+
+        setState(() {});
+      }
+    }, onError: (err) {
+      // print("getIntentDataStream error: $err");
+    });
+
+    // For sharing images coming from outside the app while the app is closed
+    FlutterSharingIntent.instance
+        .getInitialSharing()
+        .then((List<SharedFile> value) async {
+      if (value.isNotEmpty) {
+        SharedFile f0 = value[0];
+        await _timestampFile(f0.value);
+      }
+
+      setState(() {});
+    });
+  }
+
+  void _pickFileAndTimestamp() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result == null) {
+      return;
+    }
+    _timestampFile(result.files.single.path!);
+  }
+
+  Future<void> _timestampFile(filepath) async {
+    setState(() {
+      tsr = null;
+      _dumpTSA = "";
+      _dumpTST = "";
+      _errorMessage = "";
+    });
+
+    int nonceValue =
+        DateTime.now().millisecondsSinceEpoch; // Utiliser un entier unique
+
+    try {
+      tsq = TSARequest.fromFile(
+          filepath: filepath,
+          algorithm: TSAHashAlgo.sha256,
+          nonce: nonceValue,
+          certReq: true);
+
+      tsq!.write("file.digicert.tsq");
+
+      tsr = await TSAResponse(tsq!, hostname: "http://timestamp.digicert.com")
+          .run();
+
+      if (tsr != null) {
+        tsq!.write("file.digicert.tsr");
+        _errorMessage = "ok";
+
+        // ASN1Sequence tsr.asn1sequence contains the parsed response
+        // we can "dump"
+        _dumpTSA = TSACommon.explore(tsr!.asn1sequence, 0);
+
+        if (tsr!.asn1SequenceTSTInfo != null) {
+          _dumpTST = TSACommon.explore(tsr!.asn1SequenceTSTInfo!, 0);
+        }
+        setState(() {});
+      } else {
+        _errorMessage = "error";
+      }
+    } on Exception catch (e) {
+      _errorMessage = "exception : ${e.toString()}";
+    }
+    setState(() {});
   }
 }

@@ -1,7 +1,8 @@
 # Changelog
 
-### 1.0.14
-- you can "share" the .tsr file
+### 1.0.15
+
+- you can "share" both the original file and its .tsr file
 
 ### 1.0.13
 

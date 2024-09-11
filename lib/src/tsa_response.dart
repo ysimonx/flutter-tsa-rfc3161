@@ -2,6 +2,7 @@ import 'package:asn1lib/asn1lib.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:tsa_rfc3161/src/tsa_request.dart';
 
 import 'tsa_common.dart';
 import 'tsa_oid.dart';
@@ -9,11 +10,25 @@ import 'tsa_oid.dart';
 class TSAResponse extends TSACommon {
   late Response response;
 
+  final TSARequest tsq;
+  final String hostname;
   ASN1Sequence? asn1SequenceTSTInfo;
 
-  TSAResponse();
+  TSAResponse(this.tsq, {required this.hostname});
 
-  TSAResponse.fromHTTPResponse({required this.response}) {
+  Future<TSAResponse?> run() async {
+    try {
+      response = await tsq.run(hostname: hostname);
+      if (response.statusCode == 200) {
+        _parseFromHTTPResponse();
+      }
+    } on Exception {
+      rethrow;
+    }
+    return this;
+  }
+
+  _parseFromHTTPResponse() {
     ASN1Parser parser = ASN1Parser(response.data, relaxedParsing: true);
     asn1sequence = parser.nextObject() as ASN1Sequence;
 
@@ -38,7 +53,6 @@ class TSAResponse extends TSACommon {
   }
 
   // trying to build a map OID => sequence that contains the OID
-
   Map<String, ASN1Sequence> buildMapOidSeq(
       ASN1Object obj, Map<String, ASN1Sequence> mapOidSeq) {
     ASN1ObjectIdentifier? asn1oid;
@@ -78,11 +92,18 @@ class TSAResponse extends TSACommon {
     return mapOidSeq;
   }
 
-  Future<void> share(String filename) async {
+  Future<void> share() async {
     Uint8List data = asn1sequence.encodedBytes;
-    final result = await Share.shareXFiles(
-        [XFile.fromData(data, mimeType: 'application/timestamp-reply')],
-        fileNameOverrides: [filename]);
+
+    String filename = tsq.filepath!.split('/').last;
+    String filenameTSR = "${tsq.filepath!.split('/').last}.tsr";
+    final result = await Share.shareXFiles([
+      XFile(tsq.filepath!),
+      XFile.fromData(data, mimeType: 'application/timestamp-reply')
+    ], fileNameOverrides: [
+      filename,
+      filenameTSR
+    ]);
     if (result.status == ShareResultStatus.success) {
       if (kDebugMode) {
         print('Thank you for sharing the picture!');
