@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.0.15
+### 1.0.16
 
 - you can "share" both the original file and its .tsr file
 
