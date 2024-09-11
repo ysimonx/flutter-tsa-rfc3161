@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.0.11
+### 1.0.12
 
 - extract TimeStampToken TST and displays it
 
