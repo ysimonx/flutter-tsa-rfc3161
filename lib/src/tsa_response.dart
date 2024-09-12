@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:asn1lib/asn1lib.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tsa_rfc3161/src/tsa_request.dart';
 
@@ -90,6 +93,20 @@ class TSAResponse extends TSACommon {
     }
 
     return mapOidSeq;
+  }
+
+  @override
+  void write(String filename) async {
+    try {
+      Uint8List data = response.data;
+
+      Directory root = await getTemporaryDirectory();
+      File file = await File('${root.path}/$filename').create();
+      debugPrint(file.path);
+      file.writeAsBytesSync(data);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   Future<void> share() async {

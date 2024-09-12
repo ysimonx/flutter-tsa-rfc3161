@@ -205,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
           .run();
 
       if (tsr != null) {
-        tsq!.write("file.digicert.tsr");
+        tsr!.write("file.digicert.tsr");
         _errorMessage = "ok";
 
         // ASN1Sequence tsr.asn1sequence contains the parsed response
