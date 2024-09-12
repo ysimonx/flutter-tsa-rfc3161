@@ -103,19 +103,12 @@ Anyone with both "file.txt" and "file.txt.tsr" can verify the timestamp provided
 
 
 wget https://cacerts.digicert.com/DigiCertAssuredIDRootCA.crt.pem
-wget https://knowledge.digicert.com/content/dam/digicertknowledgebase/attachments/time-stamp/TSACertificate.cer
-wget https://knowledge.digicert.com/content/dam/digicertknowledgebase/DigiCertTrustedG4RSA4096SHA256TimeStampingCA.cer
-wget https://knowledge.digicert.com/content/dam/digicertknowledgebase/DigiCertTrustedRootG4.cer
-
-cat TSACertificate.cer > CHAIN.pem 
-cat DigiCertTrustedG4RSA4096SHA256TimeStampingCA.cer >> CHAIN.pem
-cat DigiCertTrustedRootG4.cer >> CHAIN.pem
 
 
 # let's verify that the timestamp proof is good
 #
 
-$ openssl ts -verify -data file.txt -in file.txt.tsr -CAfile DigiCertAssuredIDRootCA.crt.pem -untrusted CHAIN.pem
+$ openssl ts -verify -data file.txt -in file.txt.tsr -CAfile DigiCertAssuredIDRootCA.crt.pem 
 
 Verification: OK
 
