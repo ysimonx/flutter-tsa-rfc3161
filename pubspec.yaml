@@ -30,6 +30,8 @@ dependencies:
   path_provider: ^2.1.4
   share_plus: ^10.0.2
   flutter_sharing_intent: ^1.1.1
+  pkcs7: ^1.0.3
+  pointycastle: ^3.9.1
 
 dev_dependencies:
   flutter_test:

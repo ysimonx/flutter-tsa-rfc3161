@@ -140,7 +140,7 @@ and present your data like this
 ```
 
 TSAResponse tsr = TSAResponse.fromHTTPResponse(response: response);
-String result = explore(tsr.asnsequence, 0);
+String result = dump(tsr.asnsequence, 0);
 
 result contains important data like
 "2024-09-10 12:53:47.000Z" as the timestamp

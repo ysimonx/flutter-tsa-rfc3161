@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:asn1lib/asn1lib.dart';
+// import 'package:asn1lib/asn1lib.dart';
+import 'package:pointycastle/asn1.dart';
+
 import 'package:crypto/crypto.dart';
 
 enum TSAHash { sha1, sha256, sha384, sha512 }

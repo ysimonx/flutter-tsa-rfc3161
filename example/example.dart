@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
@@ -202,7 +201,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
       tsq!.write("file.digicert.tsq");
 
-      tsr = await TSAResponse(tsq!, hostname: "http://timestamp.digicert.com")
+      tsr = await TSAResponse(tsq!,
+              hostnameTSAProvider: "http://timestamp.digicert.com")
           .run();
 
       if (tsr != null) {
@@ -211,10 +211,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
         // ASN1Sequence tsr.asn1sequence contains the parsed response
         // we can "dump"
-        _dumpTSA = TSACommon.explore(tsr!.asn1sequence, 0);
+        _dumpTSA = TSACommon.dump(tsr!.asn1sequence, 0);
 
+        // if response contains TSTInfo(TimeStampInfo : it contains the important data)
         if (tsr!.asn1SequenceTSTInfo != null) {
-          _dumpTST = TSACommon.explore(tsr!.asn1SequenceTSTInfo!, 0);
+          _dumpTST = TSACommon.dump(tsr!.asn1SequenceTSTInfo!, 0);
         }
         setState(() {});
       } else {

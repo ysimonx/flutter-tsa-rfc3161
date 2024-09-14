@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:tsa_rfc3161/tsa_rfc3161.dart';
+import 'package:pkcs7/pkcs7.dart';
 
 void main() {
+  final pkcs7Builder = Pkcs7Builder();
   runApp(const MyApp());
 }
 
@@ -39,19 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _errorMessage = "";
   String? _dumpTSA = "";
   String? _dumpTST = "";
-
-  late StreamSubscription _intentDataStreamSubscription;
-
-  @override
-  void dispose() {
-    _intentDataStreamSubscription.cancel();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -167,21 +156,23 @@ class _MyHomePageState extends State<MyHomePage> {
           nonce: nonceValue,
           certReq: true);
 
-      tsq!.write("file.digicert.tsq");
+      tsq!.write("file.digicert.tsq"); // optional
 
-      tsr = await TSAResponse(tsq!, hostname: "http://timestamp.digicert.com")
+      tsr = await TSAResponse(tsq!,
+              hostnameTSAProvider: "http://timestamp.digicert.com")
           .run();
 
       if (tsr != null) {
-        tsr!.write("file.digicert.tsr");
+        tsr!.write("file.digicert.tsr"); // optional
+
         _errorMessage = "ok";
 
         // ASN1Sequence tsr.asn1sequence contains the parsed response
         // we can "dump"
-        _dumpTSA = TSACommon.explore(tsr!.asn1sequence, 0);
+        _dumpTSA = TSACommon.dump(tsr!.asn1sequence, 0);
 
         if (tsr!.asn1SequenceTSTInfo != null) {
-          _dumpTST = TSACommon.explore(tsr!.asn1SequenceTSTInfo!, 0);
+          _dumpTST = TSACommon.dump(tsr!.asn1SequenceTSTInfo!, 0);
         }
         setState(() {});
       } else {

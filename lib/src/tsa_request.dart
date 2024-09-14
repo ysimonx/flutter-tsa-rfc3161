@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:asn1lib/asn1lib.dart';
+// import 'package:asn1lib/asn1lib.dart';
+import 'package:pointycastle/asn1.dart';
+
 import 'package:dio/dio.dart';
 
 import 'tsa_hash_algo.dart';
@@ -76,7 +78,7 @@ class TSARequest extends TSACommon {
 
   void _init(
       {required ASN1Sequence messageImprint, int? nonce, bool? certReq}) {
-    ASN1Integer version = ASN1Integer.fromInt(1);
+    ASN1Integer version = ASN1Integer.fromtInt(1);
     ASN1Sequence timeStampReq = ASN1Sequence();
 
     timeStampReq.add(version);
