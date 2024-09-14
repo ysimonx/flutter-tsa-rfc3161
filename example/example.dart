@@ -202,7 +202,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
       tsq!.write("file.digicert.tsq");
 
-      tsr = await TSAResponse(tsq!, hostname: "http://timestamp.digicert.com")
+      tsr = await TSAResponse(tsq!,
+              hostnameTimeStampProvider: "http://timestamp.digicert.com")
           .run();
 
       if (tsr != null) {

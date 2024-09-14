@@ -4,10 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 
+/// main program
 void main() {
   runApp(const MyApp());
 }
 
+/// MyApp Widget
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// HomePage
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
@@ -169,7 +172,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
       tsq!.write("file.digicert.tsq");
 
-      tsr = await TSAResponse(tsq!, hostname: "http://timestamp.digicert.com")
+      tsr = await TSAResponse(tsq!,
+              hostnameTimeStampProvider: "http://timestamp.digicert.com")
           .run();
 
       if (tsr != null) {

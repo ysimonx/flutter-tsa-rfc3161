@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.0.18
+- added some documentations
+
 ### 1.0.17
 
 - fix TSResponse.write 
