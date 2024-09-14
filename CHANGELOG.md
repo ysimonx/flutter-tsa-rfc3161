@@ -1,6 +1,12 @@
 # Changelog
 
+### 1.0.19
+
+- load asn1sequence for TSARequest from Uint8list (bytes)
+
+
 ### 1.0.18
+
 - added some documentations
 
 ### 1.0.17

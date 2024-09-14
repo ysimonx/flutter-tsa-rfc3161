@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:asn1lib/asn1lib.dart';
 import 'package:dio/dio.dart';
@@ -49,6 +50,12 @@ class TSARequest extends TSACommon {
     } on Exception {
       rethrow;
     }
+  }
+
+  TSARequest.fromUint8List(dynamic bytes) {
+    Uint8List content = bytes;
+    var parser = ASN1Parser(content);
+    asn1sequence = parser.nextObject() as ASN1Sequence;
   }
 
   TSARequest.fromFile(
