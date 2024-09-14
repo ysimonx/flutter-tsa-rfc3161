@@ -1,8 +1,7 @@
 import 'dart:async';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
-import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 
 void main() {
@@ -52,8 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    // For sharing images coming from outside the app while the app is in the memory
-    _initSharingSubscription();
   }
 
   @override
@@ -144,35 +141,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  // you can share any file to this app : it will timestamp
-  void _initSharingSubscription() {
-    // For sharing files coming from outside the app while the app is in the memory
-    _intentDataStreamSubscription = FlutterSharingIntent.instance
-        .getMediaStream()
-        .listen((List<SharedFile> value) {
-      if (value.isNotEmpty) {
-        SharedFile f0 = value[0];
-        _timestampFile(f0.value);
-
-        setState(() {});
-      }
-    }, onError: (err) {
-      // print("getIntentDataStream error: $err");
-    });
-
-    // For sharing images coming from outside the app while the app is closed
-    FlutterSharingIntent.instance
-        .getInitialSharing()
-        .then((List<SharedFile> value) async {
-      if (value.isNotEmpty) {
-        SharedFile f0 = value[0];
-        await _timestampFile(f0.value);
-      }
-
-      setState(() {});
-    });
-  }
-
   void _pickFileAndTimestamp() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result == null) {
@@ -195,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       tsq = TSARequest.fromFile(
           filepath: filepath,
-          algorithm: TSAHashAlgo.sha256,
+          algorithm: TSAHash.sha256,
           nonce: nonceValue,
           certReq: true);
 

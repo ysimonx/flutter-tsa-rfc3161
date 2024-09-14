@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
+import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 
 void main() {
@@ -27,7 +29,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -41,7 +42,20 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _dumpTSA = "";
   String? _dumpTST = "";
 
-  File? file;
+  late StreamSubscription _intentDataStreamSubscription;
+
+  @override
+  void dispose() {
+    _intentDataStreamSubscription.cancel();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // For sharing images coming from outside the app while the app is in the memory
+    _initSharingSubscription();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +92,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Row(mainAxisSize: MainAxisSize.max, children: [
                       Text(_errorMessage!),
                     ])),
+              if (tsr != null)
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      IconButton(
+                          onPressed: _shareOriginalFileAndItsTimestampResponse,
+                          icon: const Icon(Icons.share)),
+                      const Text(
+                          "Share 2 files : the original one and the timestamp response")
+                    ]),
               const SizedBox(height: 50),
               if (_dumpTST != "")
                 Container(
@@ -114,16 +139,50 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _shareOriginalFileAndItsTimestampResponse() async {
+    if (tsr != null) {
+      await tsr!.share();
+    }
+  }
+
+  // you can share any file to this app : it will timestamp
+  void _initSharingSubscription() {
+    // For sharing files coming from outside the app while the app is in the memory
+    _intentDataStreamSubscription = FlutterSharingIntent.instance
+        .getMediaStream()
+        .listen((List<SharedFile> value) {
+      if (value.isNotEmpty) {
+        SharedFile f0 = value[0];
+        _timestampFile(f0.value);
+
+        setState(() {});
+      }
+    }, onError: (err) {
+      // print("getIntentDataStream error: $err");
+    });
+
+    // For sharing images coming from outside the app while the app is closed
+    FlutterSharingIntent.instance
+        .getInitialSharing()
+        .then((List<SharedFile> value) async {
+      if (value.isNotEmpty) {
+        SharedFile f0 = value[0];
+        await _timestampFile(f0.value);
+      }
+
+      setState(() {});
+    });
+  }
+
   void _pickFileAndTimestamp() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result == null) {
       return;
     }
-
-    _processFile(result.files.single.path!);
+    _timestampFile(result.files.single.path!);
   }
 
-  Future<void> _processFile(filepath) async {
+  Future<void> _timestampFile(filepath) async {
     setState(() {
       tsr = null;
       _dumpTSA = "";
@@ -137,18 +196,17 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       tsq = TSARequest.fromFile(
           filepath: filepath,
-          algorithm: TSAHashAlgo.sha256,
+          algorithm: TSAHash.sha256,
           nonce: nonceValue,
           certReq: true);
 
-      if (tsq == null) {
-        return;
-      }
+      tsq!.write("file.digicert.tsq");
 
       tsr = await TSAResponse(tsq!, hostname: "http://timestamp.digicert.com")
           .run();
 
       if (tsr != null) {
+        tsr!.write("file.digicert.tsr");
         _errorMessage = "ok";
 
         // ASN1Sequence tsr.asn1sequence contains the parsed response

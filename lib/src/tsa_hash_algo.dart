@@ -3,12 +3,9 @@ import 'dart:typed_data';
 import 'package:asn1lib/asn1lib.dart';
 import 'package:crypto/crypto.dart';
 
-class TSAHashAlgo {
-  static const int sha256 = 256;
-  static const int sha512 = 512;
-  static const int sha384 = 384;
-  static const int sha1 = 1;
+enum TSAHash { sha1, sha256, sha384, sha512 }
 
+class TSAHashAlgo {
   static ASN1Sequence getASN1Sequence(List<int> oid) {
     ASN1ObjectIdentifier asn1OId = ASN1ObjectIdentifier(oid);
 

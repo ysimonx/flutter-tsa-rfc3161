@@ -1,0 +1,6 @@
+cat file.digicert.tsr |base64
+and put content in
+https://pkitools.net/pages/timestamp/readtsr.html
+
+
+

@@ -8,11 +8,10 @@ import 'tsa_hash_algo.dart';
 import 'tsa_common.dart';
 
 class TSARequest extends TSACommon {
-  late int algorithm;
   int? nonce;
   bool? certReq;
-
   String? filepath;
+  TSAHash? algorithm;
 
   TSARequest();
 
@@ -54,9 +53,9 @@ class TSARequest extends TSACommon {
 
   TSARequest.fromFile(
       {required this.filepath,
-      required this.algorithm,
       this.nonce,
-      this.certReq}) {
+      this.certReq,
+      required this.algorithm}) {
     File file = File(filepath!);
     List<int> fileBytes = file.readAsBytesSync();
     //
@@ -102,26 +101,26 @@ class TSARequest extends TSACommon {
   }
 
   static _getSeqMessageImprintSequence(
-      {required List<int> message, required int algorithm}) {
+      {required List<int> message, required TSAHash? algorithm}) {
     //
     // seqAlgorithm
 
     ASN1Sequence seqAlgorithm;
     ASN1Object hashedText;
     switch (algorithm) {
-      case TSAHashAlgo.sha256:
+      case TSAHash.sha256:
         seqAlgorithm = TSAHashAlgoSHA256.getASN1Sequence();
         hashedText = TSAHashAlgoSHA256.getASN1ObjectHashed(message: message);
         break;
-      case TSAHashAlgo.sha512:
+      case TSAHash.sha512:
         seqAlgorithm = TSAHashAlgoSHA512.getASN1Sequence();
         hashedText = TSAHashAlgoSHA512.getASN1ObjectHashed(message: message);
         break;
-      case TSAHashAlgo.sha1:
+      case TSAHash.sha1:
         seqAlgorithm = TSAHashAlgoSHA1.getASN1Sequence();
         hashedText = TSAHashAlgoSHA1.getASN1ObjectHashed(message: message);
         break;
-      case TSAHashAlgo.sha384:
+      case TSAHash.sha384:
         seqAlgorithm = TSAHashAlgoSHA384.getASN1Sequence();
         hashedText = TSAHashAlgoSHA384.getASN1ObjectHashed(message: message);
         break;
