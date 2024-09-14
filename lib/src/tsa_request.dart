@@ -166,7 +166,7 @@ int? _findNonce(ASN1Sequence asn1sequence) {
     ASN1Object obj = asn1sequence.elements.elementAt(i);
     if (obj is ASN1Integer) {
       // it is optional
-      if (obj.value > 2) {
+      if (obj.intValue > 2) {
         // it may be the "version" (=1)
         result = obj.intValue;
       }
