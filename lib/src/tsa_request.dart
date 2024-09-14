@@ -9,6 +9,7 @@ import 'tsa_hash_algo.dart';
 import 'tsa_common.dart';
 
 class TSARequest extends TSACommon {
+  int version = 1;
   int? nonce;
   bool? certReq;
   String? filepath;
@@ -52,10 +53,12 @@ class TSARequest extends TSACommon {
     }
   }
 
-  TSARequest.fromUint8List(dynamic bytes) {
+  TSARequest.restoreFromUint8List(dynamic bytes) {
     Uint8List content = bytes;
     var parser = ASN1Parser(content);
     asn1sequence = parser.nextObject() as ASN1Sequence;
+    nonce = _findNonce(asn1sequence);
+    certReq = _findcertReq(asn1sequence);
   }
 
   TSARequest.fromFile(
@@ -83,10 +86,10 @@ class TSARequest extends TSACommon {
 
   void _init(
       {required ASN1Sequence messageImprint, int? nonce, bool? certReq}) {
-    ASN1Integer version = ASN1Integer.fromInt(1);
+    ASN1Integer asn1version = ASN1Integer.fromInt(version);
     ASN1Sequence timeStampReq = ASN1Sequence();
 
-    timeStampReq.add(version);
+    timeStampReq.add(asn1version);
     timeStampReq.add(messageImprint);
 
     // policyId
@@ -142,4 +145,32 @@ class TSARequest extends TSACommon {
     messageImprintSequence.add(hashedText);
     return messageImprintSequence;
   }
+}
+
+bool? _findcertReq(ASN1Sequence asn1sequence) {
+  bool? result;
+  for (var i = 0; i < asn1sequence.elements.length; i++) {
+    ASN1Object obj = asn1sequence.elements.elementAt(i);
+    if (obj is ASN1Boolean) {
+      // it is optional
+      result = obj.booleanValue;
+    }
+  }
+  return result;
+}
+
+int? _findNonce(ASN1Sequence asn1sequence) {
+  int? result;
+
+  for (var i = 0; i < asn1sequence.elements.length; i++) {
+    ASN1Object obj = asn1sequence.elements.elementAt(i);
+    if (obj is ASN1Integer) {
+      // it is optional
+      if (obj.value > 2) {
+        // it may be the "version" (=1)
+        result = obj.intValue;
+      }
+    }
+  }
+  return result;
 }

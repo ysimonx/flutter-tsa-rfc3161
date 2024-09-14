@@ -172,6 +172,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
       tsq!.write("file.digicert.tsq");
 
+      // TSARequest tsq2 =
+      //     TSARequest.restoreFromUint8List(tsq!.asn1sequence.encodedBytes);
+
       tsr = await TSAResponse(tsq!,
               hostnameTimeStampProvider: "http://timestamp.digicert.com")
           .run();
