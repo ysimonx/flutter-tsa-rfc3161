@@ -31,9 +31,7 @@ import 'package:tsa_rfc3161/tsa_rfc3161.dart';
           certReq: true);
 
      
-      TSAResponse tsr = await TSAResponse( 
-            tsq!,
-            hostname: "http://timestamp.digicert.com").run();
+      TSAResponse tsr =  tsq!.run(hostname: "http://timestamp.digicert.com");
 
       tsr!.write("file.digicert.tsr"); // the timestamp you should keep 
     

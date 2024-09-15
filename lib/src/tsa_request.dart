@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 
 import 'tsa_hash_algo.dart';
 import 'tsa_common.dart';
+import 'tsa_response.dart';
 
 class TSARequest extends TSACommon {
   int version = 1;
@@ -17,7 +18,8 @@ class TSARequest extends TSACommon {
 
   TSARequest();
 
-  Future<Response> run({required String hostname, String? credentials}) async {
+  Future<TSAResponse> run(
+      {required String hostname, String? credentials}) async {
     // send request to TSA Server
 
     Map<String, dynamic> headers = {
@@ -41,10 +43,17 @@ class TSARequest extends TSACommon {
       Response response = await dio.post(tsaUrl,
           data: asn1sequence.encodedBytes, options: options);
 
-      return response;
+      TSAResponse tsr =
+          TSAResponse(this, hostnameTimeStampProvider: 'hostname');
+      tsr.response = response;
+      tsr.parseFromHTTPResponse();
+      return tsr;
     } on DioException catch (e) {
       if (e.response != null) {
-        return e.response!;
+        TSAResponse tsr =
+            TSAResponse(this, hostnameTimeStampProvider: 'hostname');
+        tsr.response = e.response!;
+        return tsr;
       } else {
         rethrow;
       }

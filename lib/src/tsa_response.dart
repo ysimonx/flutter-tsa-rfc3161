@@ -31,19 +31,7 @@ class TSAResponse extends TSACommon {
 
   TSAResponse(this.tsq, {required this.hostnameTimeStampProvider});
 
-  Future<TSAResponse?> run() async {
-    try {
-      response = await tsq.run(hostname: hostnameTimeStampProvider);
-      if (response.statusCode == 200) {
-        _parseFromHTTPResponse();
-      }
-    } on Exception {
-      rethrow;
-    }
-    return this;
-  }
-
-  _parseFromHTTPResponse() {
+  parseFromHTTPResponse() {
     ASN1Parser parser = ASN1Parser(response.data, relaxedParsing: true);
     asn1sequence = parser.nextObject() as ASN1Sequence;
 
@@ -51,7 +39,7 @@ class TSAResponse extends TSACommon {
     ASN1Sequence asn1sequenceproto = asn1sequence;
     asn1sequenceproto = fix(asn1sequenceproto) as ASN1Sequence;
     asn1sequence = asn1sequenceproto;
-    String result = TSACommon.explore(asn1sequence, 0);
+    String result = this.explore(asn1sequence, 0);
     if (kDebugMode) {
       print("\n$result");
     }

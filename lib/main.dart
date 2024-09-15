@@ -175,9 +175,13 @@ class _MyHomePageState extends State<MyHomePage> {
       // TSARequest tsq2 =
       //     TSARequest.restoreFromUint8List(tsq!.asn1sequence.encodedBytes);
 
+      tsr = await tsq!.run(hostname: "http://timestamp.digicert.com");
+
+      /*
       tsr = await TSAResponse(tsq!,
-              hostnameTimeStampProvider: "http://timestamp.digicert.com")
+             
           .run();
+      */
 
       if (tsr != null) {
         tsr!.write("file.digicert.tsr");
@@ -185,10 +189,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
         // ASN1Sequence tsr.asn1sequence contains the parsed response
         // we can "dump"
-        _dumpTSA = TSACommon.explore(tsr!.asn1sequence, 0);
+        _dumpTSA = tsr!.explore(tsr!.asn1sequence, 0);
 
         if (tsr!.asn1SequenceTSTInfo != null) {
-          _dumpTST = TSACommon.explore(tsr!.asn1SequenceTSTInfo!, 0);
+          _dumpTST = tsr!.explore(tsr!.asn1SequenceTSTInfo!, 0);
         }
         setState(() {});
       } else {
