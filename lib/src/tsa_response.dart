@@ -25,11 +25,11 @@ class TSAResponse extends TSACommon {
   final TSARequest tsq;
 
   /// ie : timestamp.digicert.com : url where the provider will send back a TimeStampResponse
-  final String hostnameTimeStampProvider;
+  final String hostname;
 
   ASN1Sequence? asn1SequenceTSTInfo;
 
-  TSAResponse(this.tsq, {required this.hostnameTimeStampProvider});
+  TSAResponse(this.tsq, {required this.hostname});
 
   parseFromHTTPResponse() {
     ASN1Parser parser = ASN1Parser(response.data, relaxedParsing: true);

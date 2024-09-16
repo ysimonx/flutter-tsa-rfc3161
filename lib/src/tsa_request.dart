@@ -68,15 +68,13 @@ class TSARequest extends TSACommon {
       Response response = await dio.post(tsaUrl,
           data: asn1sequence.encodedBytes, options: options);
 
-      TSAResponse tsr =
-          TSAResponse(this, hostnameTimeStampProvider: 'hostname');
+      TSAResponse tsr = TSAResponse(this, hostname: hostname);
       tsr.response = response;
       tsr.parseFromHTTPResponse();
       return tsr;
     } on DioException catch (e) {
       if (e.response != null) {
-        TSAResponse tsr =
-            TSAResponse(this, hostnameTimeStampProvider: 'hostname');
+        TSAResponse tsr = TSAResponse(this, hostname: hostname);
         tsr.response = e.response!;
         return tsr;
       } else {
