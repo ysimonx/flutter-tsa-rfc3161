@@ -82,7 +82,7 @@ class TSACommon {
 
   static String ident(n) => List.filled(n + 1, '    ').join();
 
-  static String explore(ASN1Object obj, int? level) {
+  String explore(ASN1Object obj, int? level) {
     level ??= 0;
 
     String s = "${ident(level)}${formatTag(obj)}\n";

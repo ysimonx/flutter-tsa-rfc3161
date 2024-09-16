@@ -10,28 +10,28 @@ import 'package:tsa_rfc3161/src/tsa_request.dart';
 import 'tsa_common.dart';
 import 'tsa_oid.dart';
 
+/// TSAResponse will contain:
+/// - http Response response
+/// - TSARequest tsq
+/// - ASN1Sequence asn1sequence : the response from TSAProvider
+/// - hostnameTimeStampProvider : url of TSAProvider
+/// - ASN1Sequence? asn1SequenceTSTInfo : the ASN1Sequence of the TimeStampToken
 class TSAResponse extends TSACommon {
+  /// Http Response from TimeStamping Provider (ie : timestamp.digicert.com)
+
   late Response response;
 
+  /// TimeStampRequest used for submission to TimeStamping Provider
   final TSARequest tsq;
-  final String hostname;
+
+  /// ie : timestamp.digicert.com : url where the provider will send back a TimeStampResponse
+  final String hostnameTimeStampProvider;
+
   ASN1Sequence? asn1SequenceTSTInfo;
 
-  TSAResponse(this.tsq, {required this.hostname});
+  TSAResponse(this.tsq, {required this.hostnameTimeStampProvider});
 
-  Future<TSAResponse?> run() async {
-    try {
-      response = await tsq.run(hostname: hostname);
-      if (response.statusCode == 200) {
-        _parseFromHTTPResponse();
-      }
-    } on Exception {
-      rethrow;
-    }
-    return this;
-  }
-
-  _parseFromHTTPResponse() {
+  parseFromHTTPResponse() {
     ASN1Parser parser = ASN1Parser(response.data, relaxedParsing: true);
     asn1sequence = parser.nextObject() as ASN1Sequence;
 
@@ -39,7 +39,7 @@ class TSAResponse extends TSACommon {
     ASN1Sequence asn1sequenceproto = asn1sequence;
     asn1sequenceproto = fix(asn1sequenceproto) as ASN1Sequence;
     asn1sequence = asn1sequenceproto;
-    String result = TSACommon.explore(asn1sequence, 0);
+    String result = this.explore(asn1sequence, 0);
     if (kDebugMode) {
       print("\n$result");
     }

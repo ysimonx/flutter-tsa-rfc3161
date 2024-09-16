@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
+import 'dart:typed_data';
 
 import 'package:asn1lib/asn1lib.dart';
 import 'package:dio/dio.dart';
 
 import 'tsa_hash_algo.dart';
 import 'tsa_common.dart';
+import 'tsa_response.dart';
 
 class TSARequest extends TSACommon {
+  int version = 1;
   int? nonce;
   bool? certReq;
   String? filepath;
@@ -41,7 +43,8 @@ class TSARequest extends TSACommon {
     return tsr;
   }
 
-  Future<Response> run({required String hostname, String? credentials}) async {
+  Future<TSAResponse> run(
+      {required String hostname, String? credentials}) async {
     // send request to TSA Server
 
     Map<String, dynamic> headers = {
@@ -65,16 +68,31 @@ class TSARequest extends TSACommon {
       Response response = await dio.post(tsaUrl,
           data: asn1sequence.encodedBytes, options: options);
 
-      return response;
+      TSAResponse tsr =
+          TSAResponse(this, hostnameTimeStampProvider: 'hostname');
+      tsr.response = response;
+      tsr.parseFromHTTPResponse();
+      return tsr;
     } on DioException catch (e) {
       if (e.response != null) {
-        return e.response!;
+        TSAResponse tsr =
+            TSAResponse(this, hostnameTimeStampProvider: 'hostname');
+        tsr.response = e.response!;
+        return tsr;
       } else {
         rethrow;
       }
     } on Exception {
       rethrow;
     }
+  }
+
+  TSARequest.restoreFromUint8List(dynamic bytes) {
+    Uint8List content = bytes;
+    var parser = ASN1Parser(content);
+    asn1sequence = parser.nextObject() as ASN1Sequence;
+    nonce = _findNonce(asn1sequence);
+    certReq = _findcertReq(asn1sequence);
   }
 
   TSARequest.fromFile(
@@ -102,10 +120,10 @@ class TSARequest extends TSACommon {
 
   void _init(
       {required ASN1Sequence messageImprint, int? nonce, bool? certReq}) {
-    ASN1Integer version = ASN1Integer.fromInt(1);
+    ASN1Integer asn1version = ASN1Integer.fromInt(version);
     ASN1Sequence timeStampReq = ASN1Sequence();
 
-    timeStampReq.add(version);
+    timeStampReq.add(asn1version);
     timeStampReq.add(messageImprint);
 
     // policyId
@@ -161,4 +179,32 @@ class TSARequest extends TSACommon {
     messageImprintSequence.add(hashedText);
     return messageImprintSequence;
   }
+}
+
+bool? _findcertReq(ASN1Sequence asn1sequence) {
+  bool? result;
+  for (var i = 0; i < asn1sequence.elements.length; i++) {
+    ASN1Object obj = asn1sequence.elements.elementAt(i);
+    if (obj is ASN1Boolean) {
+      // it is optional
+      result = obj.booleanValue;
+    }
+  }
+  return result;
+}
+
+int? _findNonce(ASN1Sequence asn1sequence) {
+  int? result;
+
+  for (var i = 0; i < asn1sequence.elements.length; i++) {
+    ASN1Object obj = asn1sequence.elements.elementAt(i);
+    if (obj is ASN1Integer) {
+      // it is optional
+      if (obj.intValue > 2) {
+        // it may be the "version" (=1)
+        result = obj.intValue;
+      }
+    }
+  }
+  return result;
 }

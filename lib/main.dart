@@ -4,10 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:tsa_rfc3161/tsa_rfc3161.dart';
 
+/// main program
 void main() {
   runApp(const MyApp());
 }
 
+/// MyApp Widget
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// HomePage
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
@@ -171,8 +174,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
       Map<String, dynamic> json = tsq!.toJSON();
       TSARequest tsq2 = TSARequest.fromJSON(json);
-      tsr = await TSAResponse(tsq2, hostname: "http://timestamp.digicert.com")
-          .run();
+      TSAResponse? tsr =
+          await tsq2.run(hostname: 'http://timestamp.digicert.com');
 
       if (tsr != null) {
         tsr!.write("file.digicert.tsr");
@@ -180,10 +183,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
         // ASN1Sequence tsr.asn1sequence contains the parsed response
         // we can "dump"
-        _dumpTSA = TSACommon.explore(tsr!.asn1sequence, 0);
+        _dumpTSA = tsr!.explore(tsr!.asn1sequence, 0);
 
         if (tsr!.asn1SequenceTSTInfo != null) {
-          _dumpTST = TSACommon.explore(tsr!.asn1SequenceTSTInfo!, 0);
+          _dumpTST = tsr!.explore(tsr!.asn1SequenceTSTInfo!, 0);
         }
         setState(() {});
       } else {
