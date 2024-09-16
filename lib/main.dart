@@ -174,24 +174,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
       Map<String, dynamic> json = tsq!.toJSON();
       TSARequest tsq2 = TSARequest.fromJSON(json);
-      TSAResponse? tsr =
+      TSAResponse tsr =
           await tsq2.run(hostname: 'http://timestamp.digicert.com');
 
-      if (tsr != null) {
-        tsr!.write("file.digicert.tsr");
-        _errorMessage = "ok";
+      // if (tsr != null) {
+      tsr.write("file.digicert.tsr");
+      _errorMessage = "ok";
 
-        // ASN1Sequence tsr.asn1sequence contains the parsed response
-        // we can "dump"
-        _dumpTSA = tsr!.explore(tsr!.asn1sequence, 0);
+      // ASN1Sequence tsr.asn1sequence contains the parsed response
+      // we can "dump"
+      _dumpTSA = tsr.explore(tsr.asn1sequence, 0);
 
-        if (tsr!.asn1SequenceTSTInfo != null) {
-          _dumpTST = tsr!.explore(tsr!.asn1SequenceTSTInfo!, 0);
-        }
-        setState(() {});
-      } else {
-        _errorMessage = "error";
+      if (tsr.asn1SequenceTSTInfo != null) {
+        _dumpTST = tsr.explore(tsr.asn1SequenceTSTInfo!, 0);
       }
+      setState(() {});
+      //} else {
+      //  _errorMessage = "error";
+      //}
     } on Exception catch (e) {
       _errorMessage = "exception : ${e.toString()}";
     }
