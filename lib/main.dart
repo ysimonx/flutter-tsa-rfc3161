@@ -169,7 +169,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
       tsq!.write("file.digicert.tsq");
 
-      tsr = await TSAResponse(tsq!, hostname: "http://timestamp.digicert.com")
+      Map<String, dynamic> json = tsq!.toJSON();
+      TSARequest tsq2 = TSARequest.fromJSON(json);
+      tsr = await TSAResponse(tsq2, hostname: "http://timestamp.digicert.com")
           .run();
 
       if (tsr != null) {

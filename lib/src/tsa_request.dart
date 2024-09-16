@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 
 import 'package:asn1lib/asn1lib.dart';
 import 'package:dio/dio.dart';
@@ -14,6 +15,31 @@ class TSARequest extends TSACommon {
   TSAHash? algorithm;
 
   TSARequest();
+
+  Map<String, dynamic> toJSON() {
+    String algorithmname = "";
+    if (algorithm != null) {
+      algorithmname = algorithm!.name;
+    }
+    return {
+      "asn1sequence": base64.encode(asn1sequence.encodedBytes),
+      "nonce": nonce,
+      "certReq": certReq,
+      "algorithm": algorithmname
+    };
+  }
+
+  static fromJSON(Map<String, dynamic> json) {
+    ASN1Parser parser =
+        ASN1Parser(base64.decode(json["asn1sequence"]), relaxedParsing: true);
+
+    TSARequest tsr = TSARequest();
+    tsr.asn1sequence = parser.nextObject() as ASN1Sequence;
+    tsr.nonce = json["nonce"];
+    tsr.certReq = json["certReq"];
+    tsr.algorithm = TSAHash.values.byName(json["algorithm"]);
+    return tsr;
+  }
 
   Future<Response> run({required String hostname, String? credentials}) async {
     // send request to TSA Server
