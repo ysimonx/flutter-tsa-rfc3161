@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:asn1lib/asn1lib.dart';
@@ -31,23 +32,45 @@ class TSAResponse extends TSACommon {
 
   TSAResponse(this.tsq, {required this.hostname});
 
+  Map<String, dynamic> toJSON() {
+    return {
+      "asn1sequence": base64.encode(asn1sequence.encodedBytes),
+      "tsq": tsq.toJSON(),
+      "hostname": hostname,
+    };
+  }
+
+  static fromJSON(Map<String, dynamic> json) {
+    String hostname = json["hostname"];
+    TSARequest tsq = TSARequest.fromJSON(json["tsq"]);
+    TSAResponse tsr = TSAResponse(tsq, hostname: hostname);
+
+    ASN1Parser parser =
+        ASN1Parser(base64.decode(json["asn1sequence"]), relaxedParsing: true);
+    tsr.asn1sequence = parser.nextObject() as ASN1Sequence;
+    tsr.parse();
+    return tsr;
+  }
+
   parseFromHTTPResponse() {
     ASN1Parser parser = ASN1Parser(response.data, relaxedParsing: true);
     asn1sequence = parser.nextObject() as ASN1Sequence;
+    parse();
+  }
 
+  void parse() {
     // Poc fix
     ASN1Sequence asn1sequenceproto = asn1sequence;
     asn1sequenceproto = fix(asn1sequenceproto) as ASN1Sequence;
     asn1sequence = asn1sequenceproto;
     String result = this.explore(asn1sequence, 0);
+
     if (kDebugMode) {
       print("\n$result");
     }
 
     Map<String, ASN1Sequence> mapOidSeq = {};
-
     mapOidSeq = buildMapOidSeq(asn1sequence, mapOidSeq);
-
     if (mapOidSeq.containsKey(TSAOid.nameToOID("id-ct-TSTInfo"))) {
       asn1SequenceTSTInfo = mapOidSeq["1.2.840.113549.1.9.16.1.4"]!;
     } else {
@@ -123,7 +146,7 @@ class TSAResponse extends TSACommon {
     ]);
     if (result.status == ShareResultStatus.success) {
       if (kDebugMode) {
-        print('Thank you for sharing the picture!');
+        print('Thank you for sharing the file!');
       }
     }
   }

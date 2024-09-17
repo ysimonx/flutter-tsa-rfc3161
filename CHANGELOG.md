@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.0.24
+
+- refactoring
+
+
 ### 1.0.23
 
 - add fromJSON toJSON on TSARequest
